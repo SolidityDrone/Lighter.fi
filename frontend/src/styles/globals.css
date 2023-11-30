@@ -4,6 +4,9 @@
 
 body {
   user-select: none;
+  background-image: url('/logo-hack.svg');
+  background-repeat: no-repeat;
+  background-size: cover; 
 }
 
 /* REMOVE NUMBER UP/DOWN BUTTONS */

@@ -9,7 +9,7 @@ export const env = createEnv({
       z.literal("mainnet"),
     ]),
     // NEXT_PUBLIC_VERCEL_URL: z.string(),
-    // NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
     NEXT_PUBLIC_RAINBOWKIT_APP_NAME: z.string().min(1),
     NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID: z.string().min(1),
   },

@@ -7,7 +7,7 @@ const Home: FC = async () => {
   const greeting = await serverClient.greeting();
 
   return <div >
-    ok
+    home
   </div>
 };
 

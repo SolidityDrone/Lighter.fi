@@ -9,7 +9,7 @@ interface Props {
 const Logo: FC<Props> = ({ title }) => {
   return (
     <Link href={"/"} className="flex items-center gap-4">
-      <Image src="/logo.svg" alt="header-logo" width="40" height="40" />
+      <Image src="/logo-hack.svg" alt="header-logo" width="40" height="40" />
       {title && <h1 className="font-bold">{title}</h1>}
     </Link>
   );

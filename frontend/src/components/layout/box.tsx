@@ -1,30 +1,39 @@
-import cx from "classnames";
-import { FC, ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
+import React, { FC, ReactNode, useRef, useEffect, useState } from 'react';
 
 interface Props {
   children: ReactNode;
   className?: string;
 }
 
-const boxStyle = {
+const Box: FC<Props> = ({ children, className }) => {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [boxStyle, setBoxStyle] = useState({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '50vh', // Default height for larger screens
-    width: '100%',
+    width: '70%', // Adjust the width as needed
     border: '2px solid black',
-    padding: '20px',
-  };
+    borderRadius: '10px',
+    paddingTop: '30px',
+    paddingBottom: '50px',
+    margin: 'auto'
+  });
 
-  // Media query for smaller screens (adjust the max-width as needed)
-  const smallerScreens = {
-    '@media (max-width: 600px)': {
-      height: '30vh', // Adjusted height for smaller screens
-    },
-  }; 
-const Box: FC<Props> = ({ children, className }) => {
-  return <div style={{ ...boxStyle, ...smallerScreens }}>{children}</div>;
+  useEffect(() => {
+    if (boxRef.current) {
+      const contentHeight = boxRef.current.scrollHeight;
+      setBoxStyle((prevStyle) => ({
+        ...prevStyle,
+        height: `${contentHeight}px`,
+      }));
+    }
+  }, [children]);
+
+  return (
+    <div ref={boxRef} style={boxStyle} className={className}>
+      {children}
+    </div>
+  );
 };
 
 export default Box;

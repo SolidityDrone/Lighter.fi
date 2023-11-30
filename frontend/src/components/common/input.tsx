@@ -21,8 +21,9 @@ const sizeClassName = {
 }
 
 interface Props {
+  type?: string
   placeholder?: string
-  value?: string
+  value?: number | string
   defaultValue?: string
   readOnly?: boolean
   color?: keyof typeof colorClassName
@@ -36,6 +37,7 @@ interface Props {
 }
 
 const Input: FC<Props> = ({
+  type,
   placeholder,
   value,
   defaultValue,
@@ -59,7 +61,7 @@ const Input: FC<Props> = ({
           </label>
         ))}
       <input
-        type="text"
+        type={type}
         placeholder={placeholder}
         className={twMerge(
           cx(

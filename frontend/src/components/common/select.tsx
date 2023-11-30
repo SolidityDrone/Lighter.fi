@@ -21,6 +21,7 @@ const sizeClassName = {
 }
 
 interface Props {
+  value?:string
   title?: string
   options?: string[]
   selected?: string
@@ -30,10 +31,11 @@ interface Props {
   blLabel?: string
   brLabel?: string
   className?: string
-  onClick?: (option: string) => void
+  onClick?: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
 const Select: FC<Props> = ({
+  value,
   title,
   options,
   selected,
@@ -52,6 +54,8 @@ const Select: FC<Props> = ({
         {trLabel && <span className="label-text-alt">{trLabel}</span>}
       </label>
       <select
+        onChange={onClick}
+        value={value}
         className={twMerge(
           cx(
             `select select-bordered`,
@@ -65,9 +69,9 @@ const Select: FC<Props> = ({
           return (
             <option
               key={option}
-              selected={selected === option}
-              disabled={index === 0}
-              onClick={onClick ? () => onClick(option) : undefined}
+              value={option}
+              // disabled={index === 0}
+              // onClick={onClick ? () => onClick(option) : undefined}
             >
               {option}
             </option>

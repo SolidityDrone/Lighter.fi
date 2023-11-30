@@ -1,15 +1,15 @@
+"use client"
 import { FC } from "react";
 
-import Container from "@/components/layout";
-import Badge from "@/components/common/badge";
 import Box from "@/components/layout/box";
+import StrategyForm from "@/components/startegy/strategyForm";
 
 const Strategy: FC = async () => {
 
   
 
   return <Box>
-    startegy
+    <StrategyForm/>
   </Box>
 };
 
