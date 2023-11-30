@@ -3,7 +3,7 @@ import Button from '../common/button';
 import Input from '../common/input';
 import Select from '../common/select';
 
-const StrategyForm = () => {
+const TimeRangeStrategyForm = () => {
     const [timeRange, setTimeRange] = useState<string>('hours');
     const [timeUnit, setTimeUnit] = useState<number | string>(24);
     const [token1, setToken1] = useState('USDC');
@@ -112,4 +112,4 @@ const StrategyForm = () => {
     );
 };
 
-export default StrategyForm;
+export default TimeRangeStrategyForm;
