@@ -55,7 +55,7 @@ const Input: FC<Props> = ({
     <div className="form-control w-full max-w-xs">
       {tlLabel ||
         (trLabel && (
-          <label className="label">
+          <label className="label flex justify-end">
             {tlLabel && <span className="label-text">{tlLabel}</span>}
             {trLabel && <span className="label-text-alt">{trLabel}</span>}
           </label>

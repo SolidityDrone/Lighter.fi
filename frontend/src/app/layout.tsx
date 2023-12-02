@@ -8,7 +8,7 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "onchain cda",
+  title: "Lighter.fi",
   description: "created for constellation hackathon",
 };
 

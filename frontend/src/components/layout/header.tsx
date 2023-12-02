@@ -8,7 +8,7 @@ const Header: FC = () => {
   return (
     <Container>
       <nav className="relative z-50 flex justify-between py-8">
-        <Logo title="Onchain CDA" />
+        <Logo title="Lighter.fi" />
         <div className="flex items-center gap-10">
           <Link href={"/strategy"} className="hover:text-accent">new strategy</Link>
           <Link href={"/stats"} className="hover:text-accent">view stats</Link>

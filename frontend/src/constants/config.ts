@@ -1,6 +1,6 @@
 import { enviroment } from "@/types/chains";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { goerli, hardhat, mainnet, sepolia } from "viem/chains";
+import { goerli, hardhat, mainnet, polygonMumbai, sepolia } from "viem/chains";
 import { configureChains, createConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -8,7 +8,7 @@ import { env } from "../env.mjs";
 
 const chainConfig = {
   localhost: [hardhat],
-  testnet: [goerli, sepolia],
+  testnet: [goerli, sepolia, polygonMumbai],
   mainnet: [hardhat, goerli, sepolia, mainnet],
 };
 

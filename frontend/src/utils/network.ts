@@ -13,7 +13,7 @@ export const getBlockExplorerAddressLink = (network: chains.Chain, address: stri
 };
 
 export const getTargetNetwork = (): chains.Chain & Partial<TChainAttributes> => {
-  const configuredNetwork = chains.sepolia;
+  const configuredNetwork = chains.polygonMumbai;
 
   return {
     ...configuredNetwork,
