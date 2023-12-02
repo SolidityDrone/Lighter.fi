@@ -8,6 +8,91 @@ import "@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Math.sol";
 
+interface AggregatorV3Interface {
+    function latestRoundData()
+    external
+    view
+    returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+}
+
+contract DataConsumerV3 {
+    
+    address[] feedList = 
+        [
+            //addindex -> address(0)
+            0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada,     // matic Aggregator                       
+            0x1C2252aeeD50e0c9B64bDfF2735Ee3C932F5C408,     // link  Aggregator              
+            0x0715A7794a1dc8e42615F059dD6e406A6594651A      // eth   Aggregator   
+        ];
+    
+    constructor() {}
+
+    uint internal addressMappinglength;
+    mapping(address=>uint) public tokenIndexes;
+    mapping(address=>bool) public tokenAllowed;
+
+    /**
+    * @dev Maps unique addresses to their respective indexes in the `tokenIndexes` mapping.
+    * @param tokenAddresses An array of Ethereum addresses to be mapped.
+    */
+    function mapAddresses(address[] calldata tokenAddresses) public {
+        for (uint i; i < tokenAddresses.length; ){
+            if (tokenIndexes[tokenAddresses[i]] == 0){
+                tokenIndexes[tokenAddresses[i]] = addressMappinglength;
+                tokenAllowed[tokenAddresses[i]] = true;
+                unchecked{
+                    ++addressMappinglength;
+                } 
+            }
+            unchecked{
+                ++i;
+            }
+        }
+    } 
+
+    /**
+    * @dev Internal function to batch query price data from multiple data feeds.
+    * @return prices An array of price values retrieved from data feeds.
+    */
+    function _batchQuery() internal  view  returns (uint[] memory){
+        uint length = feedList.length;
+        uint[] memory prices = new uint[](length);
+
+        for (uint i; i < length; ){
+            prices[i] = reseizeDecimals(getChainlinkDataFeedLatestAnswer(feedList[i]));
+            unchecked{
+                ++i;
+            }
+        }
+        return (prices);
+    }
+
+    /**
+    * @dev Internal function to resize price values from 8 to 6 decimals.
+    * @param price The price value to be resized.
+    * @return The resized price value.
+    */
+    function reseizeDecimals(int price) internal pure returns (uint){
+        // reseize from 8 to 6 decimals
+        return (uint(price) / 100);
+    }
+
+    /**
+     * Returns the latest answer.
+     */
+    function getChainlinkDataFeedLatestAnswer(address feedAddress) public view returns (int) {
+        (
+            /* uint80 roundID */,
+            int answer,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = AggregatorV3Interface(feedAddress).latestRoundData();
+        return answer;
+    }
+}
+
+
 interface IDCA {
     struct UserStrategy {
         address user;
@@ -16,8 +101,8 @@ interface IDCA {
         uint256 timeInterval;
         uint256 nextExecution;
         uint256 amount;
+        uint256 limit;
         bytes lastResponse;
-        bool isFixedAmount;
     }
     
     error NotAllowedCaller(
@@ -75,26 +160,25 @@ interface IGenericSwapFacet  {
     ) external payable;
 }
 
-contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, AutomationCompatibleInterface /*, Swapper */{
+contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, AutomationCompatibleInterface, DataConsumerV3 {
     
     using FunctionsRequest for FunctionsRequest.Request;
 
     uint256 public s_usersStrategiesLength;
     bytes32 public donID;
     uint32 public gasLimit;
+    uint private constant ADDRESS_LENGTH = 20;
     address public upkeepContract1;
     uint64 public subscriptionId;
     address public upkeepContract2;
-    address public usdcAddress;
+    bytes16 private constant HEX_DIGITS = "0123456789abcdef";
     uint256 public strategyIndex;
+    address public usdcAddress;
     bool public isPaused;
     bool public isInitialized;
+    
     mapping(uint256=>UserStrategy) public s_usersStrategies;
     mapping(bytes32=>uint256) public requestsIds;
-
-    bytes16 private constant HEX_DIGITS = "0123456789abcdef";
-    uint private constant ADDRESS_LENGTH = 20;
-
     /**@dev Interface for generic_swap function in LiFi's diamond facet*/
     IGenericSwapFacet public genericSwapFacet; 
     /**@dev Hardcoded address to LiFi Diamond contract*/
@@ -205,13 +289,18 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @param tokenTo The address of the token to receive in the strategy.
     * @param timeInterval The time interval between strategy executions, in seconds.
     * @param tokenInAmount The amount of input tokens for the strategy.
-    * @param isFixedAmount A boolean indicating if the strategy uses a fixed input amount.
     * @notice This function can only be called when the contract is not paused and with valid parameters.
     */
-    function createStrategy(address tokenTo, uint256 timeInterval, uint256 tokenInAmount, bool isFixedAmount) external {
+    function createStrategy(address tokenTo, uint256 timeInterval, uint256 tokenInAmount, uint256 limit) external {
         //parameters check
         require(!isPaused, "contract paused");
-        require(tokenTo!=address(0) && timeInterval!=0 && tokenInAmount !=0, "invalid strategy params");
+        require(tokenInAmount !=0, "invalid strategy param amount");
+        require(tokenAllowed[tokenTo], "invalid strategy param tokenTo");
+        require(timeInterval == 0 || limit == 0, "Either set a timeInterval or Limit");
+        uint nextExecution;
+        if (timeInterval > 0) {
+            nextExecution = block.timestamp + timeInterval; 
+        } 
 
         //create new UserStrategy
         UserStrategy memory newStrategy = UserStrategy({
@@ -219,9 +308,9 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
             tokenIn: usdcAddress,
             tokenOut: tokenTo,
             timeInterval: timeInterval,
-            nextExecution: block.timestamp + timeInterval,
+            nextExecution: nextExecution,
             amount: tokenInAmount,
-            isFixedAmount: isFixedAmount,
+            limit: limit,
             lastResponse: hex'00'
         });
 
@@ -267,11 +356,14 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @param tokenTo The new address of the token to receive in the strategy.
     * @param timeInterval The new time interval between strategy executions, in seconds.
     * @param amountTokenIn The new amount of input tokens for the strategy.
-    * @param isFixedAmount A boolean indicating if the strategy uses a fixed input amount.
     * @return The index of the upgraded strategy.
     * @notice Only the user who created the strategy can upgrade it.
     */
-    function upgradeStrategy(uint256 index, address tokenTo, uint256 timeInterval, uint256 amountTokenIn, bool isFixedAmount) external returns (uint256) {
+    function upgradeStrategy(uint256 index, address tokenTo, uint256 timeInterval, uint256 amountTokenIn, uint256 limit) external returns (uint256) {
+        //parameters check
+        require(amountTokenIn !=0, "invalid strategy params");
+        require(tokenAllowed[tokenTo], "invalid strategy param tokenTo");
+        require(timeInterval == 0 || limit == 0, "Either set a timeInterval or Limit");
         //index check
         require(index <= s_usersStrategiesLength, "Index out of bounds");
         //load UserStrategy from mapping mapping
@@ -283,7 +375,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         strategyToUpdate.tokenOut = tokenTo;
         strategyToUpdate.timeInterval = timeInterval;
         strategyToUpdate.amount = amountTokenIn;
-        strategyToUpdate.isFixedAmount = isFixedAmount;
+        strategyToUpdate.limit = limit;
         //emit UpdatedUserStrategy event
         emit UpdatedUserStrategy(strategyToUpdate.user, index, strategyToUpdate, block.timestamp);
         //return index
@@ -298,16 +390,36 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @notice This function is external, view, and implements the Upkeep interface.
     */
     function checkUpkeep(bytes calldata ) external view override returns (bool upkeepNeeded, bytes memory performData) {
+       
+        uint[] memory prices = _batchQuery();
+        bool balanceCondition;
+        bool allowanceCondition;
+        bool timeCondition;
+        bool limitCondition;
         for (uint256 i = 0; i < s_usersStrategiesLength; i++) {
             //load UserStrategy
             UserStrategy memory strategy = s_usersStrategies[i];
-            //check time condition
-            if (strategy.user != address(0)) {
-                bool timeCondition = block.timestamp >= strategy.nextExecution;
-                bool balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
-                bool allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
-                upkeepNeeded = timeCondition && balanceCondition && allowanceCondition;
-                performData = abi.encode(i, uint(0));
+            //Check if is valid strtagy 
+            if (strategy.user != address(0)){
+
+                // DCA 
+                if (strategy.timeInterval != 0) {
+                    timeCondition = block.timestamp >= strategy.nextExecution;
+                    balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
+                    allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = timeCondition && balanceCondition && allowanceCondition;
+                    performData = abi.encode(i, uint(0));
+                 
+                }  
+                // Limit
+                if (strategy.timeInterval == 0) {
+                    //buy only if the token price is <= the limit set
+                    limitCondition = prices[tokenIndexes[strategy.tokenOut]] <= strategy.limit;
+                    balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
+                    allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = limitCondition && balanceCondition && allowanceCondition;
+                    performData = abi.encode(i, uint(0));
+                }   
                 if (upkeepNeeded){
                     return (upkeepNeeded, performData);
                 }
@@ -396,10 +508,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         bytes memory response,
         bytes memory err
     ) internal override {
-        /*
-        if (s_lastRequestId != requestId) {
-            revert UnexpectedRequestID(requestId); // Check if request IDs match
-        }*/
+    
         // Update the contract's state variables with the response and any errors
         uint256 index = requestsIds[requestId];
         //load UserStrategy from mapping mapping
