@@ -68,7 +68,7 @@ const Modal: FC<Props> = ({
               >
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-bold leading-6 text-base-content pb-4"
+                  className="text-lg font-bold leading-6 text-base-content pb-4 text-center"
                 >
                   {title}
                 </Dialog.Title>

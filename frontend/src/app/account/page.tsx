@@ -1,14 +1,15 @@
+"use client"
 import { FC } from "react";
 
 import Box from "@/components/layout/box";
 
-const Stats: FC = async () => {
+const Account: FC = async () => {
 
   
 
   return <Box>
-    stats
+    ACCOUNT
   </Box>
 };
 
-export default Stats;
+export default Account;

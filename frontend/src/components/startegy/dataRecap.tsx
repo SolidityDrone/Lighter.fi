@@ -1,5 +1,8 @@
+'use client'
+
 import { FC } from 'react'
 import Button from '../common/button';
+import { useCreateStrategy } from '@/contracts/LighterFI';
 
 interface Props {
   timeRange: any,
@@ -16,8 +19,9 @@ const DataRecap: FC<Props> = ({
   amount,
   confirm
 }) => {
+  
   return (
-    <div className="flex-column">
+    <div className="flex flex-col items-center">
       <p>The swap will happen every {timeRange}.</p>
       <ul>
         <li>
