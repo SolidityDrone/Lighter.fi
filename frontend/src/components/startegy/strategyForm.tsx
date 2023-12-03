@@ -1,27 +1,49 @@
 'use client'
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useState } from 'react';
 import Button from '../common/button';
 import Input from '../common/input';
 import Select from '../common/select';
 import Modal from '../common/modal';
 import DataRecap from './dataRecap';
-import { useCreateStrategy } from '@/contracts/LighterFI';
+import { useCreateStrategy } from '@/contracts/lighterfi/methods';
 import { availableTokensType } from '@/contracts/tokens';
 import Loading from '../common/loading';
 import Link from 'next/link';
+import { useWaitForTransaction } from 'wagmi';
+import { useApproveERC20 } from '@/contracts/ERC20/methods';
 
-const TimeRangeStrategyForm = () => {
+type Props = {
+    isUpdate?: boolean
+    data?: {
+        type: string,
+        interval: Number,
+        limit: Number,
+        token: string
+        amount: Number
+    }
+}
+
+const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
 
     const [timeRange, setTimeRange] = useState<string>('hours');
-    const [timeUnit, setTimeUnit] = useState<number | string>(24);
+    const [timeUnit, setTimeUnit] = useState<number | string>();
+    const [limitOrder, setLimitOrder] = useState<number | string>();
     const [token1, setToken1] = useState('USDC');
     const [token2, setToken2] = useState('WBTC');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState<Number | string>('');
     const [isRecapModalOpen, setIsRecapModalOpen] = useState(false);
     const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [selectedTab, setSelectedTab] = useState(1);
 
-    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite } = useCreateStrategy(timeRange, timeUnit, token1, token2 as unknown as availableTokensType, amount)
+
+    const { approveERC20Write } = useApproveERC20(Number(amount));
+
+    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite } = useCreateStrategy(timeRange, timeUnit as Number, token1, token2 as unknown as availableTokensType, amount as string, limitOrder as Number)
+
+    const { isSuccess } = useWaitForTransaction({
+        hash: createStrategyData?.hash,
+    })
 
     const handleTimeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedTimeRange = e.target.value;
@@ -84,6 +106,12 @@ const TimeRangeStrategyForm = () => {
             setIsSuccessModalOpen(true)
         }
     }
+
+    const handleApproveAndCreate = () => {
+        approveERC20Write()
+        createStrategyWrite()
+    }
+
     useEffect(() => {
         if (isCreateStrategySuccess) {
             setIsSuccessModalOpen(isCreateStrategySuccess)
@@ -94,14 +122,25 @@ const TimeRangeStrategyForm = () => {
         console.log("createStrategyData", createStrategyData)
     }, [createStrategyData])
 
-
-
     useEffect(() => {
         if (timeUnit == 0) setTimeUnit("")
-    }, [timeUnit])
+        if (limitOrder == 0) setLimitOrder("")
+    }, [timeUnit, limitOrder])
+
+    useEffect(() => {
+        if (isUpdate && data) {
+            setLimitOrder(Number(data.limit) / 1000000)
+            setAmount(Number(data.amount) / 1000000)
+            setToken2(data.token)
+        }
+    }, [isUpdate, data])
+
+
 
     return (
-        <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral rounded-md shadow-md">
+        <div className="max-w-xl p-10 bg-neutral rounded-md shadow-md">
+
+
             <Modal isOpen={isRecapModalOpen}
                 title="Check Details And Create Strategy"
                 closeModal={() => openCloseRecapModal()}
@@ -110,7 +149,7 @@ const TimeRangeStrategyForm = () => {
                     amount={amount}
                     token1={token1}
                     token2={token2}
-                    confirm={createStrategyWrite} />} />
+                    confirm={handleApproveAndCreate} />} />
             <Modal isOpen={isCreateStrategyLoading}
                 title="Please, Wait for the transaction.."
                 children={<Loading />}
@@ -123,25 +162,36 @@ const TimeRangeStrategyForm = () => {
                     </a>
                 </div>}
                 closeModal={openCloseSuccessModal} />
+            {
+                isSuccess &&
+                <Modal isOpen={isSuccessModalOpen}
+                    title="Transaction Is successful!🎉🍾🎊🎸☄️"
+                    children={<div className="flex-column">
+                        <a target="_blank" href={`https://mumbai.polygonscan.com/tx/${createStrategyData?.hash}`}>
+                            Click here to view the transaction
+                        </a>
+                    </div>}
+                    closeModal={openCloseSuccessModal} />
+
+            }
+
+
+            <div className="flex mb-4">
+                <div
+                    className={`cursor-pointer mr-4 ${selectedTab === 1 ? ' text-xs text-accent border-b-2' : 'text-xs hover:text-warning'}`}
+                    onClick={() => setSelectedTab(1)}
+                >
+                    DCA
+                </div>
+                <div
+                    className={`cursor-pointer  ${selectedTab === 2 ? 'text-xs text-accent border-b-2' : 'text-xs hover:text-warning'}`}
+                    onClick={() => setSelectedTab(2)}
+                >
+                    Limit Order
+                </div>
+            </div>
             <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <Select
-                        size='sm'
-                        color='accent'
-                        value={timeRange}
-                        options={["Hours", "Days", "Weeks", "Months"]}
-                        trLabel="Select the swap interval"
-                        onClick={handleTimeRangeChange} />
 
-                </div>
-                <div className="mb-4">
-                    <Input type="number" value={timeUnit} onChange={(e) => setTimeUnit(Number(e.target.value))}
-                        color='accent'
-                        size="sm"
-                        placeholder='How much to swap?'
-                    />
-
-                </div>
                 <div className="mb-4">
                     <Select
                         size='sm'
@@ -160,16 +210,53 @@ const TimeRangeStrategyForm = () => {
                         onClick={handleToken2Change} />
                 </div>
                 <div className="flex items-center space-x-4 mb-4">
-                    <Input type="text" value={amount} onChange={handleAmountChange}
+                    <Input type="text" value={amount as string | number} onChange={handleAmountChange}
                         color='accent'
                         size="sm"
                         placeholder='How much to swap?'
                         trLabel='Set the amount (in USDC)' />
                 </div>
+                {
+                    selectedTab === 1 &&
+                    <>
+                        <div className="mb-4">
+                            <Select
+                                size='sm'
+                                color='accent'
+                                value={timeRange}
+                                options={["Hours", "Days", "Weeks", "Months"]}
+                                trLabel="Select the swap interval"
+                                onClick={handleTimeRangeChange} />
+
+                        </div>
+                        <div className="mb-4">
+                            <Input type="number" value={timeUnit} onChange={(e) => setTimeUnit(Number(e.target.value))}
+                                color='accent'
+                                size="sm"
+                                placeholder='How much to swap?'
+                            />
+
+                        </div>
+                    </>
+                }
+                {
+                    selectedTab === 2 &&
+                    <>
+                        <div className="mb-4">
+                            <Input type="number" value={limitOrder} onChange={(e) => setLimitOrder(Number(e.target.value))}
+                                color='accent'
+                                size="sm"
+                                placeholder='Set price limit'
+                                trLabel='Set price limit'
+                            />
+
+                        </div>
+                    </>
+                }
                 <Button title="Proceed" color="warning" variant="block" isActive onClick={() => handleSubmit} />
             </form>
         </div>
     );
 };
 
-export default TimeRangeStrategyForm;
+export default StrategyForm;

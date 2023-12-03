@@ -4,12 +4,13 @@ import { FC } from "react";
 
 interface Props {
   title?: string;
+  path:string
 }
 
-const Logo: FC<Props> = ({ title }) => {
+const Logo: FC<Props> = ({ title, path }) => {
   return (
     <Link href={"/"} className="flex items-center gap-4">
-      <Image src="/logo-hack.svg" alt="header-logo" width="40" height="40" />
+      <Image src={path} alt="header-logo" width="40" height="40" />
       {title && <h1 className="font-bold">{title}</h1>}
     </Link>
   );

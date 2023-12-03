@@ -8,7 +8,8 @@ interface Props {
 
 const Layout: FC<Props> = ({ children }) => {
   return (
-    <div className="h-screen overflow-y-scroll bg-base-200">
+    <div 
+    className="layout bg-base-200">
       <Header />
       <Container>{children}</Container>
     </div>

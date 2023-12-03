@@ -2,7 +2,7 @@
 
 import { FC } from 'react'
 import Button from '../common/button';
-import { useCreateStrategy } from '@/contracts/LighterFI';
+import { useCreateStrategy } from '@/contracts/lighterfi/methods';
 
 interface Props {
   timeRange: any,

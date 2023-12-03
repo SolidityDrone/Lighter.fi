@@ -2,12 +2,16 @@ import { FC } from "react";
 import { serverClient } from "./_trpc/serverClient";
 import Container from "@/components/layout";
 import Badge from "@/components/common/badge";
+import Hero from "@/components/landing/hero";
+import Features from "@/components/landing/features";
+
 
 const Home: FC = async () => {
-  const greeting = await serverClient.greeting();
-
-  return <div >
-    home
+     
+  return <div 
+       >
+    <Hero/>
+    <Features/>
   </div>
 };
 

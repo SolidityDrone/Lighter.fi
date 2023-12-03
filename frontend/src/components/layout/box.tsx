@@ -16,23 +16,15 @@ const Box: FC<Props> = ({ children, className }) => {
     borderRadius: '10px',
     paddingTop: '30px',
     paddingBottom: '50px',
+    marginBottom: '50px',
     margin: 'auto'
   });
 
-  useEffect(() => {
-    if (boxRef.current) {
-      const contentHeight = boxRef.current.scrollHeight;
-      setBoxStyle((prevStyle) => ({
-        ...prevStyle,
-        height: `${contentHeight}px`,
-      }));
-    }
-  }, [children]);
 
   return (
-    <div ref={boxRef} style={boxStyle} className={className}>
-      {children}
-    </div>
+      <div ref={boxRef} style={boxStyle} className={className}>
+        {children}
+      </div>
   );
 };
 

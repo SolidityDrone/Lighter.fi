@@ -11,6 +11,7 @@ const colorClassName = {
   'base-200': 'bg-base-200 focus:ring-neutral',
   'base-300': 'bg-base-300 focus:ring-neutral',
   info: 'bg-info focus:ring-info',
+  neutralBlurry: 'bg-neutral focus:ring-neutral  ',
   success: 'bg-success focus:ring-success',
   warning: 'bg-warning focus:ring-warning',
   error: 'bg-error focus:ring-error',
