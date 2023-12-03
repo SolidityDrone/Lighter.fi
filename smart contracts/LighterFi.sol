@@ -111,12 +111,12 @@ interface IDCA {
         address automationRegistry
     );
 
-    event NewUserStrategy(address indexed, UserStrategy, uint256, uint256);
-    event RemovedUserStrategy(address indexed , uint256, uint256);
-    event UpdatedUserStrategy(address indexed, uint256, UserStrategy, uint256);
-    event RequestReceived(bytes32, uint256);
-    event Response(bytes32 requestId, bytes topic1, bytes topic2);
-    event SwapExecuted(bytes32, uint256, uint256, address, address, address);
+    event NewUserStrategy(address indexed user, UserStrategy userStrategy, uint256 strategyIndex);
+    event RemovedUserStrategy(address indexed user, uint256 strategyIndex);
+    event UpdatedUserStrategy(address indexed user, UserStrategy userStrategy, uint256 strategyIndex);
+    event RequestReceived(bytes32 indexed requestId , uint256 strategyIndex);
+    event Response(bytes32 indexed requestId, bytes response, bytes err);
+    event SwapExecuted(bytes32 indexed requestId, uint256 strategyIndex, uint256 amountIn, address user, address tokenIn, address tokenOut);
 }
 
 struct Log {
@@ -324,7 +324,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
             s_usersStrategiesLength +=1;
             //emit NewUserStrategy event
         }
-        emit NewUserStrategy(newStrategy.user, newStrategy, newstrategyIndex, block.timestamp);
+        emit NewUserStrategy(newStrategy.user, newStrategy, newstrategyIndex);
     }
 
 
@@ -344,7 +344,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         //delete UserStrategy struct in s_usersStrategies mapping
         delete s_usersStrategies[index];
         //emit RemovedUserStrategy event
-        emit RemovedUserStrategy(msg.sender, index, block.timestamp);
+        emit RemovedUserStrategy(msg.sender, index);
         //return index
         return(index);
     }
@@ -377,7 +377,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         strategyToUpdate.amount = amountTokenIn;
         strategyToUpdate.limit = limit;
         //emit UpdatedUserStrategy event
-        emit UpdatedUserStrategy(strategyToUpdate.user, index, strategyToUpdate, block.timestamp);
+        emit UpdatedUserStrategy(strategyToUpdate.user, strategyToUpdate, index);
         //return index
         return(index);
     }
