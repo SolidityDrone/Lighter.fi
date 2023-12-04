@@ -457,6 +457,11 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         Log calldata log,
         bytes memory
     ) external pure returns (bool upkeepNeeded, bytes memory performData) {
+        //if the fulfill request function had an error the upkeep must not be triggered
+        if(log.topics[2] != hex'00') {
+            upkeepNeeded = false;
+        }
+
         upkeepNeeded = true;
         performData = abi.encode(log.topics[0], uint(1));
     }
