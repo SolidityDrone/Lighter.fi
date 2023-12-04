@@ -19,7 +19,6 @@ contract DataConsumerV3 {
     
     address[] feedList = 
         [
-            //addindex -> address(0)
             0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada,     // matic Aggregator                       
             0x1C2252aeeD50e0c9B64bDfF2735Ee3C932F5C408,     // link  Aggregator              
             0x0715A7794a1dc8e42615F059dD6e406A6594651A      // eth   Aggregator   
@@ -192,10 +191,11 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     /**@dev source string for Chainlink Function call*/
     string source = 
         "const fC= 'pol';"
-        "const tT=args[0];"
-        "const fAd=args[1];"
-        "const fAm=args[2];"
-        "const lRUrl = `https://li.quest/v1/quote?fromChain=${fC}&toChain=${fC}&fromToken=0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174&toToken=${tT}&fromAddress=${fAd}&fromAmount=${fAm}`;"
+        "const fT=args[0];"
+        "const tT=args[1];"
+        "const fAd=args[2];"
+        "const fAm=args[3];"
+        "const lRUrl = `https://li.quest/v1/quote?fromChain=${fC}&toChain=${fC}&fromToken=${fT}&toToken=${tT}&fromAddress=${fAd}&fromAmount=${fAm}`;"
         "const lR = await Functions.makeHttpRequest({"
             "url: lRUrl,"
             "method: 'GET',"
@@ -265,7 +265,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     /**
     * @dev Set the addresses of the automation cron contracts.
     * @param _upkeepContract1 Address of the first automation cron contract.
-    * @param _upkeepContract2 Address of the second automation cron contract.
+    * @param _upkeepContract2 Address of the second automation log contract.
     * @notice Only the contract owner can call this function to update the addresses.
     */
     function setAutomationCronContract(address _upkeepContract1, address _upkeepContract2) external onlyOwner {
@@ -291,7 +291,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @param tokenInAmount The amount of input tokens for the strategy.
     * @notice This function can only be called when the contract is not paused and with valid parameters.
     */
-    function createStrategy(address tokenTo, uint256 timeInterval, uint256 tokenInAmount, uint256 limit) external {
+    function createStrategy(address tokenFrom, address tokenTo, uint256 timeInterval, uint256 tokenInAmount, uint256 limit) external {
         //parameters check
         require(!isPaused, "contract paused");
         require(tokenInAmount !=0, "invalid strategy param amount");
@@ -300,13 +300,15 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         uint nextExecution;
         if (timeInterval > 0) {
             nextExecution = block.timestamp + timeInterval; 
-        } 
+        } else if (limit > 0) {
+            require(tokenAllowed[tokenFrom]);
+        }
 
         //create new UserStrategy
         UserStrategy memory newStrategy = UserStrategy({
             user: msg.sender,
-            tokenIn: usdcAddress,
-            tokenOut: tokenTo,
+            tokenIn: timeInterval > 0 ? usdcAddress : tokenFrom, //in case of Limit order the tokenIn can be different from USDC
+            tokenOut: timeInterval > 0 ? tokenTo : usdcAddress, //in case of DCA the tokenOut can be different from USDC
             timeInterval: timeInterval,
             nextExecution: nextExecution,
             amount: tokenInAmount,
@@ -349,7 +351,6 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         return(index);
     }
 
-
     /**
     * @dev Upgrade an existing user strategy with new parameters.
     * @param index The index of the user strategy to be upgraded.
@@ -359,7 +360,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @return The index of the upgraded strategy.
     * @notice Only the user who created the strategy can upgrade it.
     */
-    function upgradeStrategy(uint256 index, address tokenTo, uint256 timeInterval, uint256 amountTokenIn, uint256 limit) external returns (uint256) {
+    function upgradeStrategy(uint256 index, address tokenFrom, address tokenTo, uint256 timeInterval, uint256 amountTokenIn, uint256 limit) external returns (uint256) {
         //parameters check
         require(amountTokenIn !=0, "invalid strategy params");
         require(tokenAllowed[tokenTo], "invalid strategy param tokenTo");
@@ -370,9 +371,16 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         UserStrategy storage strategyToUpdate = s_usersStrategies[index];
         //user check
         require(strategyToUpdate.user == msg.sender, "Unauthorized");
+        uint nextExecution;
+        if (timeInterval > 0) {
+            nextExecution = block.timestamp + timeInterval; 
+        } else if (limit > 0) {
+            require(tokenAllowed[tokenFrom]);
+        }
 
         // update strategyToRemove struct params
-        strategyToUpdate.tokenOut = tokenTo;
+        strategyToUpdate.tokenIn = timeInterval > 0 ? usdcAddress : tokenFrom; //in case of Limit order the tokenIn can be different from USDC
+        strategyToUpdate.tokenOut = timeInterval > 0 ? tokenTo : usdcAddress; //in case of DCA the tokenOut can be different from USDC
         strategyToUpdate.timeInterval = timeInterval;
         strategyToUpdate.amount = amountTokenIn;
         strategyToUpdate.limit = limit;
@@ -414,9 +422,10 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
                 // Limit
                 if (strategy.timeInterval == 0) {
                     //buy only if the token price is <= the limit set
-                    limitCondition = prices[tokenIndexes[strategy.tokenOut]] <= strategy.limit;
-                    balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
-                    allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
+                    //sell only if the token price is >= the limit set
+                    limitCondition = strategy.tokenIn == usdcAddress ? prices[tokenIndexes[strategy.tokenOut]] <= strategy.limit : prices[tokenIndexes[strategy.tokenIn]] >= strategy.limit;
+                    balanceCondition = IERC20(strategy.tokenIn).balanceOf(strategy.user) >= strategy.amount;
+                    allowanceCondition = IERC20(strategy.tokenIn).allowance(strategy.user, address(this)) >= strategy.amount;
                     upkeepNeeded = limitCondition && balanceCondition && allowanceCondition;
                     performData = abi.encode(i, uint(0));
                 }   
@@ -451,7 +460,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @param performData the data inputed by Chainlink Automation retrieved by checkUpkeep and checkLog output
     * @notice This function is external and it's used both to call the sendRequest (to call the LIFI API) and to perform the actual user swap (using the calldata retrieved by the fulfillRequest) 
     */
-    function performUpkeep(bytes calldata performData) external override(ILogAutomation, AutomationCompatibleInterface) {
+    function performUpkeep(bytes calldata performData) onlyAllowed external override(ILogAutomation, AutomationCompatibleInterface) {
         //retrieve the index
         (, uint operationId) = abi.decode(performData, (uint, uint));
         if (operationId == 0){
@@ -467,6 +476,13 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
             uint index = requestsIds[requestId];
             UserStrategy storage strategy = s_usersStrategies[index];
             //readResponseAndSwap(strategy.lastResponse, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut); //(bytes memory data, uint amountIn, address receiver,  address tokenFrom, address tokenTo)
+            //if it's a limit order operation it must be deleted after its execution
+            if(strategy.limit>0) {
+                //delete UserStrategy struct in s_usersStrategies mapping
+                delete s_usersStrategies[index];
+                //emit RemovedUserStrategy event
+                emit RemovedUserStrategy(msg.sender, index);
+            }
             emit SwapExecuted(requestId, index, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
         }
     }
