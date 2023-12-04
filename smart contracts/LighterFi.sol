@@ -231,6 +231,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     constructor(address _router) FunctionsClient(_router) ConfirmedOwner(msg.sender) {
         isInitialized = false;
         genericSwapFacet = IGenericSwapFacet(lifiDiamond);
+        usdcAddress = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174;
     }
 
     /**
@@ -296,25 +297,31 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         require(!isPaused, "contract paused");
         require(tokenInAmount !=0, "invalid strategy param amount");
         require(tokenAllowed[tokenTo], "invalid strategy param tokenTo");
+        require(tokenAllowed[tokenFrom], "invalid strategy param tokenFrom");
         require(timeInterval == 0 || limit == 0, "Either set a timeInterval or Limit");
+        
+        // Requirements for minimum timeInterval 
+        // Requirements for minimum limit (in $)
         uint nextExecution;
         if (timeInterval > 0) {
             nextExecution = block.timestamp + timeInterval; 
-        } else if (limit > 0) {
+        } else {
             require(tokenAllowed[tokenFrom]);
         }
 
         //create new UserStrategy
         UserStrategy memory newStrategy = UserStrategy({
             user: msg.sender,
-            tokenIn: timeInterval > 0 ? usdcAddress : tokenFrom, //in case of Limit order the tokenIn can be different from USDC
-            tokenOut: timeInterval > 0 ? tokenTo : usdcAddress, //in case of DCA the tokenOut can be different from USDC
+            tokenIn:  timeInterval > 0 ? usdcAddress : tokenFrom, //in case of Limit order the tokenIn can be different from USDC
+            tokenOut: tokenTo, //in case of DCA the tokenOut can be different from USDC
             timeInterval: timeInterval,
             nextExecution: nextExecution,
             amount: tokenInAmount,
             limit: limit,
             lastResponse: hex'00'
         });
+
+        require((newStrategy.tokenIn != newStrategy.tokenOut), "invalid strtagy param: tokens are equal");
 
         uint256 newstrategyIndex = strategyIndex;
         //save the strategy in the userStrategies mapping
@@ -365,6 +372,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         require(amountTokenIn !=0, "invalid strategy params");
         require(tokenAllowed[tokenTo], "invalid strategy param tokenTo");
         require(timeInterval == 0 || limit == 0, "Either set a timeInterval or Limit");
+        require(tokenFrom != tokenTo, "invalid strtagy param: tokens are equal");
         //index check
         require(index <= s_usersStrategiesLength, "Index out of bounds");
         //load UserStrategy from mapping mapping
@@ -377,13 +385,15 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
         } else if (limit > 0) {
             require(tokenAllowed[tokenFrom]);
         }
-
+     
         // update strategyToRemove struct params
         strategyToUpdate.tokenIn = timeInterval > 0 ? usdcAddress : tokenFrom; //in case of Limit order the tokenIn can be different from USDC
-        strategyToUpdate.tokenOut = timeInterval > 0 ? tokenTo : usdcAddress; //in case of DCA the tokenOut can be different from USDC
+        strategyToUpdate.tokenOut = tokenTo; //in case of DCA the tokenOut can be different from USDC
+        require((strategyToUpdate.tokenIn != strategyToUpdate.tokenOut), "invalid strtagy param: tokens are equal");
         strategyToUpdate.timeInterval = timeInterval;
         strategyToUpdate.amount = amountTokenIn;
         strategyToUpdate.limit = limit;
+
         //emit UpdatedUserStrategy event
         emit UpdatedUserStrategy(strategyToUpdate.user, strategyToUpdate, index);
         //return index
@@ -398,7 +408,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
     * @notice This function is external, view, and implements the Upkeep interface.
     */
     function checkUpkeep(bytes calldata ) external view override returns (bool upkeepNeeded, bytes memory performData) {
-       
+        
         uint[] memory prices = _batchQuery();
         bool balanceCondition;
         bool allowanceCondition;
@@ -413,20 +423,20 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
                 // DCA 
                 if (strategy.timeInterval != 0) {
                     timeCondition = block.timestamp >= strategy.nextExecution;
-                    balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
-                    allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
-                    upkeepNeeded = timeCondition && balanceCondition && allowanceCondition;
+                    // balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
+                    // allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = timeCondition/* && balanceCondition && allowanceCondition*/;
                     performData = abi.encode(i, uint(0));
                  
                 }  
                 // Limit
-                if (strategy.timeInterval == 0) {
+                if (strategy.timeInterval == 0 && strategy.limit != 0) {
                     //buy only if the token price is <= the limit set
                     //sell only if the token price is >= the limit set
                     limitCondition = strategy.tokenIn == usdcAddress ? prices[tokenIndexes[strategy.tokenOut]] <= strategy.limit : prices[tokenIndexes[strategy.tokenIn]] >= strategy.limit;
-                    balanceCondition = IERC20(strategy.tokenIn).balanceOf(strategy.user) >= strategy.amount;
-                    allowanceCondition = IERC20(strategy.tokenIn).allowance(strategy.user, address(this)) >= strategy.amount;
-                    upkeepNeeded = limitCondition && balanceCondition && allowanceCondition;
+                    // balanceCondition = IERC20(strategy.tokenIn).balanceOf(strategy.user) >= strategy.amount;
+                    // allowanceCondition = IERC20(strategy.tokenIn).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = limitCondition /*&& balanceCondition && allowanceCondition*/;
                     performData = abi.encode(i, uint(0));
                 }   
                 if (upkeepNeeded){
@@ -467,10 +477,14 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
             (uint index, ) = abi.decode(performData, (uint, uint));
             //load UserStrategy
             UserStrategy storage strategy = s_usersStrategies[index];
+            if(strategy.timeInterval != 0){
+                strategy.nextExecution = block.timestamp + strategy.timeInterval;
+            } else {
+                strategy.limit = 0;
+            }
             //perform sendRequest
             sendRequest(index);
             //update UserStrategy nextExecution
-            strategy.nextExecution = block.timestamp + strategy.timeInterval;
         } else {
             (bytes32 requestId, ) = abi.decode(performData, (bytes32, uint));
             uint index = requestsIds[requestId];
@@ -491,14 +505,14 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
      * @notice Sends an HTTP request using Chainlink Functions infrastructure
      * @param index the index of the user strategy containing the data to pass to the LIFI API call.
      */
-    function sendRequest(uint256 index)  internal {
+    function sendRequest(uint256 index) internal {
         FunctionsRequest.Request memory req;
         // Initialize the request with JS code
         req.initializeRequestForInlineJavaScript(source); 
         //load UserStrategy from mapping mapping
         UserStrategy memory strategy = s_usersStrategies[index];
         //retrieve args as string[] for chainLink function Request encoding
-        string[] memory args = generateArgForRequest(strategy.tokenOut, strategy.user, strategy.amount);
+        string[] memory args = generateArgForRequest(strategy.tokenIn, strategy.tokenOut, strategy.user, strategy.amount);
         // Set the arguments for the request
         req.setArgs(args); 
         // Send the request and store the request ID
@@ -720,21 +734,24 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, IDCA, ILogAutomation, Aut
 
     /**
     * @dev Generates arguments for a request, converting token and user addresses, and amount to strings.
-    * @param token The address of the token.
+    * @param _tokenFrom The address of the tokenFrom.
+    * @param _tokenTo The address of the tokenTo.
     * @param user The user's address.
     * @param amount The amount of the token as a uint256.
     * @return An array of strings representing the converted token address, user address, and amount.
     * @notice This function is internal and pure, meaning it does not modify state and can only be called within the contract.
     */
-    function generateArgForRequest(address token, address user, uint256 amount) internal pure returns(string[] memory) {
-        string memory toToken = addressToString(abi.encodePacked(token));
+    function generateArgForRequest(address _tokenFrom, address _tokenTo, address user, uint256 amount) internal pure returns(string[] memory) {
+        string memory tokenFrom = addressToString(abi.encodePacked(_tokenFrom));
+        string memory tokenTo = addressToString(abi.encodePacked(_tokenTo));
         string memory fromAddress = addressToString(abi.encodePacked(user));
         string memory fromAmount = uintToString(amount);
 
-        string[] memory result = new string[](3);
-        result[0] = toToken;
-        result[1] = fromAddress;
-        result[2] = fromAmount;
+        string[] memory result = new string[](4);
+        result[0] = tokenFrom;
+        result[1] = tokenTo;
+        result[2] = fromAddress;
+        result[3] = fromAmount;
         return result;
     }
 
