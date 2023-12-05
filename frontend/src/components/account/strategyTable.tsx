@@ -39,7 +39,7 @@ const StrategyTable = () => {
     // Sample data for the table
     const [selected, setSelected] = useState<Number>(0)
 
-    const tableHeaders = ["ID", "type", "Token To", "N of Purchases"]
+    const tableHeaders = ["No.", "type", "Token To", "N of Purchases"]
     const tableData = [
         { id: "1", type: "DCA", token: logo(availableTokens.polygonMumbai.WBTC), nswap: "2" },
         { id: "2", type: "limit Order", token: logo(availableTokens.polygonMumbai.LINK), nswap: "1" },
@@ -63,7 +63,7 @@ const StrategyTable = () => {
 
     return (
         <div className="mx-auto mt-8 p-6 bg-neutral rounded-md shadow-md">
-            <h2>Your Strategies</h2>
+            <h2> My Strategies</h2>
             <Table headers={tableHeaders} data={tableData as any} />
         </div>
     );

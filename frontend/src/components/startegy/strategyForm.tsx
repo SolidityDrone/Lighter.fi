@@ -28,8 +28,9 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
     const [timeRange, setTimeRange] = useState<string>('hours');
     const [timeUnit, setTimeUnit] = useState<number | string>();
     const [limitOrder, setLimitOrder] = useState<number | string>();
+    const [limitOrderType, setLimitOrderType] = useState("buy"); 
     const [token1, setToken1] = useState('USDC');
-    const [token2, setToken2] = useState('WBTC');
+    const [token2, setToken2] = useState('AVAX');
     const [amount, setAmount] = useState<Number | string>('');
     const [isRecapModalOpen, setIsRecapModalOpen] = useState(false);
     const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
@@ -146,6 +147,8 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                 closeModal={() => openCloseRecapModal()}
                 children={<DataRecap
                     timeRange={`${timeUnit} ${timeRange}`}
+                    limit={limitOrder}
+                    limitOrderType={limitOrderType}
                     amount={amount}
                     token1={token1}
                     token2={token2}
@@ -192,21 +195,26 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
             </div>
             <form onSubmit={handleSubmit}>
 
-                <div className="mb-4">
+               
+                {
+                    selectedTab === 1 &&
+                    
+                    <>
+                     <div className="mb-4">
                     <Select
                         size='sm'
                         color='accent'
                         value={token1}
                         options={["USDC"]}
-                        trLabel="Select the token you want to put"
+                        trLabel="Select the token you want to sell"
                         onClick={handleToken1Change} />
 
                     <Select
                         size='sm'
                         color='accent'
                         value={token2}
-                        options={["WETH", "WBTC", "LINK"]}
-                        trLabel="Select the token you want to get"
+                        options={["AAVE" , "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                        trLabel="Select the token you want to buy"
                         onClick={handleToken2Change} />
                 </div>
                 <div className="flex items-center space-x-4 mb-4">
@@ -216,9 +224,6 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                         placeholder='How much to swap?'
                         trLabel='Set the amount (in USDC)' />
                 </div>
-                {
-                    selectedTab === 1 &&
-                    <>
                         <div className="mb-4">
                             <Select
                                 size='sm'
@@ -233,26 +238,143 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                             <Input type="number" value={timeUnit} onChange={(e) => setTimeUnit(Number(e.target.value))}
                                 color='accent'
                                 size="sm"
-                                placeholder='How much to swap?'
+                                placeholder='How many?'
                             />
 
                         </div>
                     </>
                 }
-                {
-                    selectedTab === 2 &&
-                    <>
+                {selectedTab === 2 && (
+                <div>
+                    <div className="mb-4">
+                    <label className="block text-xs font-semibold text-accent">Action:</label>
+                    <div className="flex items-center space-x-4">
+                        <label className="flex items-center cursor-pointer">
+                        <input
+                            type="radio"
+                            value="buy"
+                            checked={limitOrderType === 'buy'}
+                            onChange={() => setLimitOrderType('buy')}
+                        />
+                        <span className="ml-1">Buy</span>
+                        </label>
+                        <label className="flex items-center cursor-pointer">
+                        <input
+                            type="radio"
+                            value="sell"
+                            checked={limitOrderType === 'sell'}
+                            onChange={() => setLimitOrderType('sell')}
+                        />
+                        <span className="ml-1">Sell</span>
+                        </label>
+                    </div>
+                    </div>
+
+                    {limitOrderType === 'buy' ? (
+                    <div>
                         <div className="mb-4">
-                            <Input type="number" value={limitOrder} onChange={(e) => setLimitOrder(Number(e.target.value))}
-                                color='accent'
-                                size="sm"
-                                placeholder='Set price limit'
-                                trLabel='Set price limit'
-                            />
-
+                        <label className="block text-xs font-semibold text-accent">Token to Sell:</label>
+                        <Select
+                            size="sm"
+                            color="accent"
+                            value={token1}
+                            options={["USDC"]}
+                            trLabel="Token to sell"
+                            onClick={handleToken1Change}
+                        />
                         </div>
-                    </>
-                }
+                        <div className="mb-4">
+                        <label className="block text-xs font-semibold text-accent">Token to Buy:</label>
+                        <Select
+                            size="sm"
+                            color="accent"
+                            value={token2}
+                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                            trLabel="Select the token you want to buy"
+                            onClick={handleToken2Change}
+                        />
+                        </div>
+                        <div className="mb-4">
+                        <Input
+                            type="text"
+                            value={amount as string | number}
+                            onChange={handleAmountChange}
+                            color="accent"
+                            size="sm"
+                            placeholder={`How much USDC to swap?`}
+                            trLabel={`Set the amount (in USDC)`}
+                        />
+                        </div>
+
+                        <div className="mb-4">
+                        <Input
+                            type="number"
+                            value={limitOrder}
+                            onChange={(e) => setLimitOrder(Number(e.target.value))}
+                            color="accent"
+                            size="sm"
+                            placeholder={`Set ${token2} price limit to buy`}
+                            trLabel="At which price the swap will be executed"
+                        />
+                        </div>
+                    </div>
+                    ) : (
+                    <div>
+                        <div className="mb-4">
+                        <label className="block text-xs font-semibold text-accent">Token to Sell:</label>
+                        <Select
+                            size="sm"
+                            color="accent"
+                            value={token1}
+                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                            trLabel="Select the token you want to sell"
+                            onClick={handleToken1Change}
+                        />
+                        </div>
+                        <div className="mb-4">
+                        <label className="block text-xs font-semibold text-accent">Token to Buy:</label>
+                        <Select
+                            size="sm"
+                            color="accent"
+                            value={token2}
+                            options={["USDC"]}
+                            trLabel="Token to buy"
+                            onClick={handleToken2Change}
+                        />
+                        </div>
+                        <div className="mb-4">
+                        <Input
+                            type="text"
+                            value={amount as string | number}
+                            onChange={handleAmountChange}
+                            color="accent"
+                            size="sm"
+                            placeholder={`How much ${token1} to swap?`}
+                            trLabel={`Set the amount (in ${token1})`}
+                        />
+                        </div>
+
+                        <div className="mb-4">
+                        <Input
+                            type="number"
+                            value={limitOrder}
+                            onChange={(e) => setLimitOrder(Number(e.target.value))}
+                            color="accent"
+                            size="sm"
+                            placeholder={`Set ${token1} price limit to sell`}
+                            trLabel="At which price the swap will be executed"
+                            
+                        />
+                        </div>
+                    </div>
+                    )}
+
+                    
+                </div>
+                )}
+
+
+
                 <Button title="Proceed" color="warning" variant="block" isActive onClick={() => handleSubmit} />
             </form>
         </div>

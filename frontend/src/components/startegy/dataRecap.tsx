@@ -6,6 +6,8 @@ import { useCreateStrategy } from '@/contracts/lighterfi/methods';
 
 interface Props {
   timeRange: any,
+  limit: any,
+  limitOrderType: any,
   token1: any,
   token2: any,
   amount: any,
@@ -14,22 +16,35 @@ interface Props {
 
 const DataRecap: FC<Props> = ({
   timeRange,
+  limit,
+  limitOrderType,
   token1,
   token2,
   amount,
   confirm
 }) => {
   
+  let recapText = '';
+
+  if (limit) {
+    if (limitOrderType === 'buy') {
+      recapText = `You're creating a limit order strategy swapping ${amount} USDC for ${token2} when the price of ${token2} will be ${limit}`;
+    } else if (limitOrderType === 'sell') {
+      recapText = `You're creating a limit order strategy swapping ${amount} ${token2} for USDC when the price of ${token2} will be ${limit}`;
+    }
+  } else {
+    recapText = `You're creating a DCA strategy swapping ${amount} USDC for ${token2} every ${timeRange}`;
+  }
+
   return (
     <div className="flex flex-col items-center">
-      <p>The swap will happen every {timeRange}.</p>
       <ul>
         <li>
-          <strong>You're swapping </strong> {amount} {token1} <strong>To</strong> {token2}
+          {recapText}
         </li>
       </ul>
-      <br/>
-       <Button title="Create Strategy" color="accent" variant="wide" isActive onClick={() => confirm()} />
+      <br />
+      <Button title="Create Strategy" color="accent" variant="wide" isActive onClick={() => confirm()} />
     </div>
   );
 };
