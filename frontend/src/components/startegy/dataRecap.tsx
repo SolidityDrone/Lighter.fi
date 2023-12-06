@@ -1,8 +1,5 @@
-'use client'
-
 import { FC } from 'react'
 import Button from '../common/button';
-import { useCreateStrategy } from '@/contracts/lighterfi/methods';
 
 interface Props {
   timeRange: any,
@@ -27,9 +24,9 @@ const DataRecap: FC<Props> = ({
   let recapText = '';
 
   if (limit) {
-    if (limitOrderType === 'buy') {
+    if (limitOrderType) {
       recapText = `You're creating a limit order strategy swapping ${amount} USDC for ${token2} when the price of ${token2} will be ${limit}`;
-    } else if (limitOrderType === 'sell') {
+    } else if (!limitOrderType) {
       recapText = `You're creating a limit order strategy swapping ${amount} ${token2} for USDC when the price of ${token2} will be ${limit}`;
     }
   } else {

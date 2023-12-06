@@ -1,3 +1,4 @@
+"use client"
 import Layout from "@/components/layout";
 import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -6,8 +7,7 @@ import { Inter } from "next/font/google";
 import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: "Lighter.fi",
   description: "created for constellation hackathon",
 };

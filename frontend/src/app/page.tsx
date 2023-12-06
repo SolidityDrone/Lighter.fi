@@ -1,3 +1,4 @@
+"use client"
 import { FC } from "react";
 import { serverClient } from "./_trpc/serverClient";
 import Container from "@/components/layout";

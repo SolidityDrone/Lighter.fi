@@ -1,5 +1,5 @@
 import { useContractWrite } from "wagmi";
-import { availableTokens, possibleNetworks } from "../tokens";
+import { AllowedPolygonMumbaiTokens, allowedTokens, availableTokens, possibleNetworks } from "../tokens";
 import { calculateTimeInterval } from "../utils";
 import { abi, address } from "./constants";
 
@@ -11,13 +11,22 @@ const baseConfig = {
 }
 
 
-export const useCreateStrategy = (timeRange: string, timeUnit: string | Number, tokenFrom: string, tokenToOption: any, amount: string, limit: string | Number) => {
+export const useCreateStrategy = (timeRange: string, timeUnit: string | Number, stableToken: AllowedPolygonMumbaiTokens, riskyToken: AllowedPolygonMumbaiTokens, amount: string, limit: string | Number, isBuy = true) => {
 
 	// prepare transaction 
 	const network = { name: "polygonMumbai" }
 
 	//token to swap
-	const tokento: string = availableTokens["polygonMumbai"][tokenToOption as "WETH" | "WBTC" | "LINK"]
+	// const tokento: string = availableTokens["polygonMumbai"][tokenToOption as "WETH" | "WBTC" | "LINK"]
+	let tokenfrom: string
+	let tokento: string
+	if (isBuy) { //sempre true a parte quando è un limit sell
+		tokenfrom = allowedTokens.polygonMumbai[stableToken] // USDC
+		tokento = allowedTokens.polygonMumbai[riskyToken] // wrapped matic
+	} else {
+		tokento = allowedTokens.polygonMumbai[riskyToken] // wrapped matic
+		tokenfrom = allowedTokens.polygonMumbai[stableToken] // USDC
+	}
 
 	// time interval or limit
 	let interval
@@ -31,7 +40,7 @@ export const useCreateStrategy = (timeRange: string, timeUnit: string | Number, 
 	}
 
 	const amountWithDecimals = Number(amount) * 1000000
-	const args: any[] = [tokento, interval, amountWithDecimals, limitOrder]
+	const args: any[] = [tokenfrom, tokento, interval, amountWithDecimals, limitOrder]
 
 	const { data: createStrategyData, isLoading: isCreateStrategyLoading, isSuccess: isCreateStrategySuccess, write: createStrategyWrite } = useContractWrite({
 		...baseConfig,

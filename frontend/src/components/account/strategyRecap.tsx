@@ -1,8 +1,6 @@
-'use client'
-
 import { FC, useState } from 'react'
 import Button from '../common/button';
-import { useCreateStrategy, useRemoveStrategy } from '@/contracts/lighterfi/methods';
+import { useRemoveStrategy } from '@/contracts/lighterfi/methods';
 import { useWaitForTransaction } from 'wagmi';
 import Modal from '../common/modal';
 import Loading from '../common/loading';

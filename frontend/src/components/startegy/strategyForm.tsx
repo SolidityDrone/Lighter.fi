@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React, { FC, FormEvent, useEffect, useState } from 'react';
 import Button from '../common/button';
 import Input from '../common/input';
@@ -23,12 +23,13 @@ type Props = {
     }
 }
 
+
 const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
 
     const [timeRange, setTimeRange] = useState<string>('hours');
     const [timeUnit, setTimeUnit] = useState<number | string>();
     const [limitOrder, setLimitOrder] = useState<number | string>();
-    const [limitOrderType, setLimitOrderType] = useState("buy"); 
+    const [limitOrderType, setLimitOrderType] = useState<boolean>(true); 
     const [token1, setToken1] = useState('USDC');
     const [token2, setToken2] = useState('AVAX');
     const [amount, setAmount] = useState<Number | string>('');
@@ -40,7 +41,7 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
 
     const { approveERC20Write } = useApproveERC20(Number(amount));
 
-    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite } = useCreateStrategy(timeRange, timeUnit as Number, token1, token2 as unknown as availableTokensType, amount as string, limitOrder as Number)
+    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite } = useCreateStrategy(timeRange, timeUnit as Number, token1 as any, token2 as any, amount as string, limitOrder as Number, limitOrderType)
 
     const { isSuccess } = useWaitForTransaction({
         hash: createStrategyData?.hash,
@@ -213,7 +214,7 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                         size='sm'
                         color='accent'
                         value={token2}
-                        options={["AAVE" , "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                        options={["AAVE" , "AVAX", "FXS", "JOE", "LINK", "WMATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
                         trLabel="Select the token you want to buy"
                         onClick={handleToken2Change} />
                 </div>
@@ -253,8 +254,8 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                         <input
                             type="radio"
                             value="buy"
-                            checked={limitOrderType === 'buy'}
-                            onChange={() => setLimitOrderType('buy')}
+                            checked={limitOrderType}
+                            onChange={() => setLimitOrderType(true)}
                         />
                         <span className="ml-1">Buy</span>
                         </label>
@@ -262,15 +263,15 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                         <input
                             type="radio"
                             value="sell"
-                            checked={limitOrderType === 'sell'}
-                            onChange={() => setLimitOrderType('sell')}
+                            checked={limitOrderType ? false: true}
+                            onChange={() => setLimitOrderType(false)}
                         />
                         <span className="ml-1">Sell</span>
                         </label>
                     </div>
                     </div>
 
-                    {limitOrderType === 'buy' ? (
+                    {limitOrderType? (
                     <div>
                         <div className="mb-4">
                         <label className="block text-xs font-semibold text-accent">Token to Sell:</label>
@@ -289,7 +290,7 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                             size="sm"
                             color="accent"
                             value={token2}
-                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "WMATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
                             trLabel="Select the token you want to buy"
                             onClick={handleToken2Change}
                         />
@@ -326,7 +327,7 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
                             size="sm"
                             color="accent"
                             value={token1}
-                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "MATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
+                            options={["AAVE", "AVAX", "FXS", "JOE", "LINK", "WMATIC", "MAKER", "SNX", "UNI", "WBTC", "WETH"]}
                             trLabel="Select the token you want to sell"
                             onClick={handleToken1Change}
                         />

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import Table from '../common/table';
 import Button from '../common/button';
 import Modal from '../common/modal';
 import StrategyRecap from './strategyRecap';
 import { availableTokens } from '@/contracts/tokens';
 import Logo from '../layout/logo';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+
 
 const logo = (address: string) => {
     let el
@@ -57,6 +60,49 @@ const StrategyTable = () => {
     ];
 
 
+
+    const APIURL = 'https://api.thegraph.com/subgraphs/name/soliditydrone/lighter-fi'
+
+    const tokensQuery = `
+     query($id: String) {
+        user( id:$id ) {
+             strategies(where: {type: "Limit"}){
+                amount
+                blockTimestamp
+                id
+                limit
+                nextExecution
+                strategyIndex
+                timeInterval
+                tokenIn
+                tokenOut
+                type
+             }
+        }
+  }
+`
+
+
+
+
+    useEffect(() => {
+
+        const client = new ApolloClient({
+            uri: APIURL,
+            cache: new InMemoryCache(),
+        })
+        client
+            .query({
+                query: gql(tokensQuery),
+                variables: {
+                    id: "0xf8d487de6f92995c539093fd4419e1b12759c08b",
+                },
+            })
+            .then((data) => console.log('Subgraph data: ', data))
+            .catch((err) => {
+                console.log('Error fetching data: ', err)
+            })
+    })
 
     //  const [tableData, setTableData] = useState(initialData);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);

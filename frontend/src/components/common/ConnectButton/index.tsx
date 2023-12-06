@@ -1,4 +1,3 @@
-"use client";
 
 import { copyToClipboard } from "@/utils/copy";
 import { getBlockExplorerAddressLink, getTargetNetwork } from "@/utils/network";

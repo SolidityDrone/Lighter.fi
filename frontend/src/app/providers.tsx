@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { CHAINS, config } from "@/constants/config";
 import { env } from "@/env.mjs";
