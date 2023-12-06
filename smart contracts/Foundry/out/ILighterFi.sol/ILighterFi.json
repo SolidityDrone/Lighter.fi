@@ -1,0 +1,1639 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "automationRegistry",
+          "type": "address"
+        }
+      ],
+      "name": "NotAllowedCaller",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timeInterval",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nextExecution",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "limit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "lastResponse",
+              "type": "bytes"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct ILighterFi.UserStrategy",
+          "name": "userStrategy",
+          "type": "tuple"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "strategyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "NewUserStrategy",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "strategyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "RemovedUserStrategy",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "strategyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "RequestReceived",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "response",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "err",
+          "type": "bytes"
+        }
+      ],
+      "name": "Response",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "strategyIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amountIn",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "tokenIn",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "tokenOut",
+          "type": "address"
+        }
+      ],
+      "name": "SwapExecuted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timeInterval",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nextExecution",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "limit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "lastResponse",
+              "type": "bytes"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct ILighterFi.UserStrategy",
+          "name": "userStrategy",
+          "type": "tuple"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "strategyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "UpdatedUserStrategy",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"automationRegistry\",\"type\":\"address\"}],\"name\":\"NotAllowedCaller\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenIn\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"timeInterval\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nextExecution\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"limit\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"lastResponse\",\"type\":\"bytes\"}],\"indexed\":false,\"internalType\":\"struct ILighterFi.UserStrategy\",\"name\":\"userStrategy\",\"type\":\"tuple\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyIndex\",\"type\":\"uint256\"}],\"name\":\"NewUserStrategy\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyIndex\",\"type\":\"uint256\"}],\"name\":\"RemovedUserStrategy\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"requestId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyIndex\",\"type\":\"uint256\"}],\"name\":\"RequestReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"requestId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"response\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"err\",\"type\":\"bytes\"}],\"name\":\"Response\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"requestId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amountIn\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"tokenIn\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"tokenOut\",\"type\":\"address\"}],\"name\":\"SwapExecuted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenIn\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"timeInterval\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nextExecution\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"limit\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"lastResponse\",\"type\":\"bytes\"}],\"indexed\":false,\"internalType\":\"struct ILighterFi.UserStrategy\",\"name\":\"userStrategy\",\"type\":\"tuple\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyIndex\",\"type\":\"uint256\"}],\"name\":\"UpdatedUserStrategy\",\"type\":\"event\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/interfaces/ILighterFi.sol\":\"ILighterFi\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@chainlink/=lib/chainlink/contracts/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":chainlink/=lib/chainlink/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":std/=lib/forge-std/src/\"]},\"sources\":{\"src/interfaces/ILighterFi.sol\":{\"keccak256\":\"0xf7beaed81657fc1e21c73277a615bd1b35eeebda7640ce3069bdb068b49f44a9\",\"urls\":[\"bzz-raw://ccad25c0572cec2c250fa737562138bb5b2c6067414a60afa94abc16b0d08b67\",\"dweb:/ipfs/QmYbw8t2EiGGnVBigV7VEf4WXcRiSiTWycde6PqzVURdf6\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.20+commit.a1b79de6"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "automationRegistry",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "NotAllowedCaller"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "struct ILighterFi.UserStrategy",
+              "name": "userStrategy",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timeInterval",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nextExecution",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "limit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "lastResponse",
+                  "type": "bytes"
+                }
+              ],
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "strategyIndex",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "NewUserStrategy",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "strategyIndex",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "RemovedUserStrategy",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "strategyIndex",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "RequestReceived",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes",
+              "indexed": false
+            },
+            {
+              "internalType": "bytes",
+              "name": "err",
+              "type": "bytes",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Response",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "strategyIndex",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address",
+              "indexed": false
+            },
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address",
+              "indexed": false
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "SwapExecuted",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "struct ILighterFi.UserStrategy",
+              "name": "userStrategy",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timeInterval",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nextExecution",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "limit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "lastResponse",
+                  "type": "bytes"
+                }
+              ],
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "strategyIndex",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "UpdatedUserStrategy",
+          "anonymous": false
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@chainlink/=lib/chainlink/contracts/",
+        ":@openzeppelin/=lib/openzeppelin-contracts/",
+        ":chainlink/=lib/chainlink/contracts/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":std/=lib/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/interfaces/ILighterFi.sol": "ILighterFi"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/interfaces/ILighterFi.sol": {
+        "keccak256": "0xf7beaed81657fc1e21c73277a615bd1b35eeebda7640ce3069bdb068b49f44a9",
+        "urls": [
+          "bzz-raw://ccad25c0572cec2c250fa737562138bb5b2c6067414a60afa94abc16b0d08b67",
+          "dweb:/ipfs/QmYbw8t2EiGGnVBigV7VEf4WXcRiSiTWycde6PqzVURdf6"
+        ],
+        "license": null
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/interfaces/ILighterFi.sol",
+    "id": 36178,
+    "exportedSymbols": {
+      "ILighterFi": [
+        36177
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "0:1013:49",
+    "nodes": [
+      {
+        "id": 36099,
+        "nodeType": "PragmaDirective",
+        "src": "0:24:49",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".19"
+        ]
+      },
+      {
+        "id": 36177,
+        "nodeType": "ContractDefinition",
+        "src": "28:983:49",
+        "nodes": [
+          {
+            "id": 36116,
+            "nodeType": "StructDefinition",
+            "src": "56:245:49",
+            "nodes": [],
+            "canonicalName": "ILighterFi.UserStrategy",
+            "members": [
+              {
+                "constant": false,
+                "id": 36101,
+                "mutability": "mutable",
+                "name": "user",
+                "nameLocation": "95:4:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "87:12:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 36100,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "87:7:49",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36103,
+                "mutability": "mutable",
+                "name": "tokenIn",
+                "nameLocation": "118:7:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "110:15:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 36102,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "110:7:49",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36105,
+                "mutability": "mutable",
+                "name": "tokenOut",
+                "nameLocation": "144:8:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "136:16:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 36104,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "136:7:49",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36107,
+                "mutability": "mutable",
+                "name": "timeInterval",
+                "nameLocation": "171:12:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "163:20:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 36106,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "163:7:49",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36109,
+                "mutability": "mutable",
+                "name": "nextExecution",
+                "nameLocation": "202:13:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "194:21:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 36108,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "194:7:49",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36111,
+                "mutability": "mutable",
+                "name": "amount",
+                "nameLocation": "234:6:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "226:14:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 36110,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "226:7:49",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36113,
+                "mutability": "mutable",
+                "name": "limit",
+                "nameLocation": "259:5:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "251:13:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 36112,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "251:7:49",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36115,
+                "mutability": "mutable",
+                "name": "lastResponse",
+                "nameLocation": "281:12:49",
+                "nodeType": "VariableDeclaration",
+                "scope": 36116,
+                "src": "275:18:49",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes_storage_ptr",
+                  "typeString": "bytes"
+                },
+                "typeName": {
+                  "id": 36114,
+                  "name": "bytes",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "275:5:49",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_storage_ptr",
+                    "typeString": "bytes"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "UserStrategy",
+            "nameLocation": "63:12:49",
+            "scope": 36177,
+            "visibility": "public"
+          },
+          {
+            "id": 36124,
+            "nodeType": "ErrorDefinition",
+            "src": "313:116:49",
+            "nodes": [],
+            "errorSelector": "426fbc71",
+            "name": "NotAllowedCaller",
+            "nameLocation": "319:16:49",
+            "parameters": {
+              "id": 36123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36118,
+                  "mutability": "mutable",
+                  "name": "caller",
+                  "nameLocation": "354:6:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36124,
+                  "src": "346:14:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36117,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "346:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36120,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nameLocation": "379:5:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36124,
+                  "src": "371:13:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36119,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "371:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36122,
+                  "mutability": "mutable",
+                  "name": "automationRegistry",
+                  "nameLocation": "403:18:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36124,
+                  "src": "395:26:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36121,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "395:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "335:93:49"
+            }
+          },
+          {
+            "id": 36133,
+            "nodeType": "EventDefinition",
+            "src": "437:94:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "76077091b25b37316df3930ef4f2b6248911c2aead51908ad20525fc8e099ea5",
+            "name": "NewUserStrategy",
+            "nameLocation": "443:15:49",
+            "parameters": {
+              "id": 36132,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36126,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "475:4:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36133,
+                  "src": "459:20:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36125,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "459:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36129,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "userStrategy",
+                  "nameLocation": "494:12:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36133,
+                  "src": "481:25:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_UserStrategy_$36116_memory_ptr",
+                    "typeString": "struct ILighterFi.UserStrategy"
+                  },
+                  "typeName": {
+                    "id": 36128,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 36127,
+                      "name": "UserStrategy",
+                      "nameLocations": [
+                        "481:12:49"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 36116,
+                      "src": "481:12:49"
+                    },
+                    "referencedDeclaration": 36116,
+                    "src": "481:12:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_UserStrategy_$36116_storage_ptr",
+                      "typeString": "struct ILighterFi.UserStrategy"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36131,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "strategyIndex",
+                  "nameLocation": "516:13:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36133,
+                  "src": "508:21:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36130,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "508:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "458:72:49"
+            }
+          },
+          {
+            "id": 36139,
+            "nodeType": "EventDefinition",
+            "src": "537:71:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "d4bcfe01803d6cc1b6cb87942924062b921ce853a0e0ad1a59cb92fa77f3a8cc",
+            "name": "RemovedUserStrategy",
+            "nameLocation": "543:19:49",
+            "parameters": {
+              "id": 36138,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36135,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "579:4:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36139,
+                  "src": "563:20:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36134,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "563:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36137,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "strategyIndex",
+                  "nameLocation": "593:13:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36139,
+                  "src": "585:21:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36136,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "585:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "562:45:49"
+            }
+          },
+          {
+            "id": 36148,
+            "nodeType": "EventDefinition",
+            "src": "614:98:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "6737b9f3a5b839875fd01c830b2f52c3bed21caeb651e7f8ee987351c10db2fd",
+            "name": "UpdatedUserStrategy",
+            "nameLocation": "620:19:49",
+            "parameters": {
+              "id": 36147,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36141,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "656:4:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36148,
+                  "src": "640:20:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36140,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "640:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36144,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "userStrategy",
+                  "nameLocation": "675:12:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36148,
+                  "src": "662:25:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_UserStrategy_$36116_memory_ptr",
+                    "typeString": "struct ILighterFi.UserStrategy"
+                  },
+                  "typeName": {
+                    "id": 36143,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 36142,
+                      "name": "UserStrategy",
+                      "nameLocations": [
+                        "662:12:49"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 36116,
+                      "src": "662:12:49"
+                    },
+                    "referencedDeclaration": 36116,
+                    "src": "662:12:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_UserStrategy_$36116_storage_ptr",
+                      "typeString": "struct ILighterFi.UserStrategy"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36146,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "strategyIndex",
+                  "nameLocation": "697:13:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36148,
+                  "src": "689:21:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36145,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "689:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "639:72:49"
+            }
+          },
+          {
+            "id": 36154,
+            "nodeType": "EventDefinition",
+            "src": "718:73:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "7b0781c2059d56137f2d3814f1213c0bbbd546ff1f4e1a95a7b41f4234e9ee32",
+            "name": "RequestReceived",
+            "nameLocation": "724:15:49",
+            "parameters": {
+              "id": 36153,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36150,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "requestId",
+                  "nameLocation": "756:9:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36154,
+                  "src": "740:25:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 36149,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "740:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36152,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "strategyIndex",
+                  "nameLocation": "776:13:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36154,
+                  "src": "768:21:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36151,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "768:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "739:51:49"
+            }
+          },
+          {
+            "id": 36162,
+            "nodeType": "EventDefinition",
+            "src": "797:69:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "7873807bf6ddc50401cd3d29bbe0decee23fd4d68d273f4b5eb83cded4d2f172",
+            "name": "Response",
+            "nameLocation": "803:8:49",
+            "parameters": {
+              "id": 36161,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36156,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "requestId",
+                  "nameLocation": "828:9:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36162,
+                  "src": "812:25:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 36155,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "812:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36158,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "response",
+                  "nameLocation": "845:8:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36162,
+                  "src": "839:14:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 36157,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "839:5:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36160,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "err",
+                  "nameLocation": "861:3:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36162,
+                  "src": "855:9:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 36159,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "855:5:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "811:54:49"
+            }
+          },
+          {
+            "id": 36176,
+            "nodeType": "EventDefinition",
+            "src": "872:136:49",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "2cbc8e6970e7a6e926100654a692677c7960085229cf130f3afa93a8b89ed387",
+            "name": "SwapExecuted",
+            "nameLocation": "878:12:49",
+            "parameters": {
+              "id": 36175,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36164,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "requestId",
+                  "nameLocation": "907:9:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "891:25:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 36163,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "891:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36166,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "strategyIndex",
+                  "nameLocation": "926:13:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "918:21:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36165,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "918:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36168,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amountIn",
+                  "nameLocation": "949:8:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "941:16:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36167,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "941:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36170,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "967:4:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "959:12:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36169,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "959:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36172,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "tokenIn",
+                  "nameLocation": "981:7:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "973:15:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36171,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "973:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36174,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "tokenOut",
+                  "nameLocation": "998:8:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36176,
+                  "src": "990:16:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36173,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "990:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "890:117:49"
+            }
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ILighterFi",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          36177
+        ],
+        "name": "ILighterFi",
+        "nameLocation": "38:10:49",
+        "scope": 36178,
+        "usedErrors": [
+          36124
+        ],
+        "usedEvents": [
+          36133,
+          36139,
+          36148,
+          36154,
+          36162,
+          36176
+        ]
+      }
+    ]
+  },
+  "id": 49
+}

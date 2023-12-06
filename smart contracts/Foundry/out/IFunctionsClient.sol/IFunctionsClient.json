@@ -1,0 +1,299 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "response",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "err",
+          "type": "bytes"
+        }
+      ],
+      "name": "handleOracleFulfillment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "handleOracleFulfillment(bytes32,bytes,bytes)": "0ca76175"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"requestId\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"response\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"err\",\"type\":\"bytes\"}],\"name\":\"handleOracleFulfillment\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"handleOracleFulfillment(bytes32,bytes,bytes)\":{\"details\":\"Either response or error parameter will be set, but never both.\",\"params\":{\"err\":\"Aggregated error either from the request's source code or from the execution pipeline.\",\"requestId\":\"The requestId returned by FunctionsClient.sendRequest().\",\"response\":\"Aggregated response from the request's source code.\"}}},\"title\":\"Chainlink Functions client interface.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"handleOracleFulfillment(bytes32,bytes,bytes)\":{\"notice\":\"Chainlink Functions response handler called by the Functions Router during fullilment from the designated transmitter node in an OCR round.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"lib/chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol\":\"IFunctionsClient\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@chainlink/=lib/chainlink/contracts/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":chainlink/=lib/chainlink/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":std/=lib/forge-std/src/\"]},\"sources\":{\"lib/chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol\":{\"keccak256\":\"0xeddc6ac3b2ceaff1e2afac899e8f55b2f53e43f299d4b654566836dea6544e32\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5718b02a5defe68505e459cd94dac0ec28acdd1f9a42a1bf4c0d6abd44eacc43\",\"dweb:/ipfs/Qmbm6z5Veck7ghTRgLnoDQYu5q4ytA3a39V4Ff9obitVXN\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.20+commit.a1b79de6"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "err",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "handleOracleFulfillment"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "handleOracleFulfillment(bytes32,bytes,bytes)": {
+            "details": "Either response or error parameter will be set, but never both.",
+            "params": {
+              "err": "Aggregated error either from the request's source code or from the execution pipeline.",
+              "requestId": "The requestId returned by FunctionsClient.sendRequest().",
+              "response": "Aggregated response from the request's source code."
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "handleOracleFulfillment(bytes32,bytes,bytes)": {
+            "notice": "Chainlink Functions response handler called by the Functions Router during fullilment from the designated transmitter node in an OCR round."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@chainlink/=lib/chainlink/contracts/",
+        ":@openzeppelin/=lib/openzeppelin-contracts/",
+        ":chainlink/=lib/chainlink/contracts/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":std/=lib/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "lib/chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol": "IFunctionsClient"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "lib/chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol": {
+        "keccak256": "0xeddc6ac3b2ceaff1e2afac899e8f55b2f53e43f299d4b654566836dea6544e32",
+        "urls": [
+          "bzz-raw://5718b02a5defe68505e459cd94dac0ec28acdd1f9a42a1bf4c0d6abd44eacc43",
+          "dweb:/ipfs/Qmbm6z5Veck7ghTRgLnoDQYu5q4ytA3a39V4Ff9obitVXN"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "lib/chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol",
+    "id": 231,
+    "exportedSymbols": {
+      "IFunctionsClient": [
+        230
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:704:5",
+    "nodes": [
+      {
+        "id": 218,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:5",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".18"
+        ]
+      },
+      {
+        "id": 230,
+        "nodeType": "ContractDefinition",
+        "src": "107:628:5",
+        "nodes": [
+          {
+            "id": 229,
+            "nodeType": "FunctionDefinition",
+            "src": "631:102:5",
+            "nodes": [],
+            "documentation": {
+              "id": 220,
+              "nodeType": "StructuredDocumentation",
+              "src": "138:490:5",
+              "text": "@notice Chainlink Functions response handler called by the Functions Router\n during fullilment from the designated transmitter node in an OCR round.\n @param requestId The requestId returned by FunctionsClient.sendRequest().\n @param response Aggregated response from the request's source code.\n @param err Aggregated error either from the request's source code or from the execution pipeline.\n @dev Either response or error parameter will be set, but never both."
+            },
+            "functionSelector": "0ca76175",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "handleOracleFulfillment",
+            "nameLocation": "640:23:5",
+            "parameters": {
+              "id": 227,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 222,
+                  "mutability": "mutable",
+                  "name": "requestId",
+                  "nameLocation": "672:9:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 229,
+                  "src": "664:17:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 221,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "664:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 224,
+                  "mutability": "mutable",
+                  "name": "response",
+                  "nameLocation": "696:8:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 229,
+                  "src": "683:21:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 223,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "683:5:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 226,
+                  "mutability": "mutable",
+                  "name": "err",
+                  "nameLocation": "719:3:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 229,
+                  "src": "706:16:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 225,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:5:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "663:60:5"
+            },
+            "returnParameters": {
+              "id": 228,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "732:0:5"
+            },
+            "scope": 230,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IFunctionsClient",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 219,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:49:5",
+          "text": "@title Chainlink Functions client interface."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          230
+        ],
+        "name": "IFunctionsClient",
+        "nameLocation": "117:16:5",
+        "scope": 231,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 5
+}

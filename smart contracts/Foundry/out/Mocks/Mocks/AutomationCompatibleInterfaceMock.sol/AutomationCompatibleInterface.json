@@ -1,0 +1,434 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "checkData",
+          "type": "bytes"
+        },
+        {
+          "internalType": "int256",
+          "name": "fuzz",
+          "type": "int256"
+        }
+      ],
+      "name": "checkUpkeep",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "upkeepNeeded",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes",
+          "name": "performData",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "performData",
+          "type": "bytes"
+        }
+      ],
+      "name": "performUpkeep",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "checkUpkeep(bytes,int256)": "21d1fdd0",
+    "performUpkeep(bytes)": "4585e33b"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"checkData\",\"type\":\"bytes\"},{\"internalType\":\"int256\",\"name\":\"fuzz\",\"type\":\"int256\"}],\"name\":\"checkUpkeep\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"upkeepNeeded\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"performData\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"performData\",\"type\":\"bytes\"}],\"name\":\"performUpkeep\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"checkUpkeep(bytes,int256)\":{\"details\":\"To ensure that it is never called, you may want to add the cannotExecute modifier from KeeperBase to your implementation of this method.\",\"params\":{\"checkData\":\"specified in the upkeep registration so it is always the same for a registered upkeep. This can easily be broken down into specific arguments using `abi.decode`, so multiple upkeeps can be registered on the same contract and easily differentiated by the contract.\"},\"returns\":{\"performData\":\"bytes that the keeper should call performUpkeep with, if upkeep is needed. If you would like to encode data to decode later, try `abi.encode`.\",\"upkeepNeeded\":\"boolean to indicate whether the keeper should call performUpkeep or not.\"}},\"performUpkeep(bytes)\":{\"details\":\"The input to this method should not be trusted, and the caller of the method should not even be restricted to any single registry. Anyone should be able call it, and the input should be validated, there is no guarantee that the data passed in is the performData returned from checkUpkeep. This could happen due to malicious keepers, racing keepers, or simply a state change while the performUpkeep transaction is waiting for confirmation. Always validate the data passed in.\",\"params\":{\"performData\":\"is the data which was passed back from the checkData simulation. If it is encoded, it can easily be decoded into other types by calling `abi.decode`. This data should not be trusted, and should be validated against the contract's current state.\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"checkUpkeep(bytes,int256)\":{\"notice\":\"method that is simulated by the keepers to see if any work actually needs to be performed. This method does does not actually need to be executable, and since it is only ever simulated it can consume lots of gas.\"},\"performUpkeep(bytes)\":{\"notice\":\"method that is actually executed by the keepers, via the registry. The data returned by the checkUpkeep simulation will be passed into this method to actually be executed.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/mocks/AutomationCompatibleInterfaceMock.sol\":\"AutomationCompatibleInterface\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@chainlink/=lib/chainlink/contracts/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":chainlink/=lib/chainlink/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":std/=lib/forge-std/src/\"],\"viaIR\":true},\"sources\":{\"src/mocks/AutomationCompatibleInterfaceMock.sol\":{\"keccak256\":\"0xf94c0c78bf6b8ecf728e3f951d3aa0444ac15820349ca50efbeeffd0b6573cac\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://110834b3ffba6d09500f9aeb62ce7eeda999f71a1dc790dc45319eebab9e6e0b\",\"dweb:/ipfs/QmSnw9xgMw6SuraHp2LwZW6i3gDyHD7uUKufsN97xaZdYm\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.20+commit.a1b79de6"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "checkData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "int256",
+              "name": "fuzz",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "checkUpkeep",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "upkeepNeeded",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "performData",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "performData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "performUpkeep"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "checkUpkeep(bytes,int256)": {
+            "details": "To ensure that it is never called, you may want to add the cannotExecute modifier from KeeperBase to your implementation of this method.",
+            "params": {
+              "checkData": "specified in the upkeep registration so it is always the same for a registered upkeep. This can easily be broken down into specific arguments using `abi.decode`, so multiple upkeeps can be registered on the same contract and easily differentiated by the contract."
+            },
+            "returns": {
+              "performData": "bytes that the keeper should call performUpkeep with, if upkeep is needed. If you would like to encode data to decode later, try `abi.encode`.",
+              "upkeepNeeded": "boolean to indicate whether the keeper should call performUpkeep or not."
+            }
+          },
+          "performUpkeep(bytes)": {
+            "details": "The input to this method should not be trusted, and the caller of the method should not even be restricted to any single registry. Anyone should be able call it, and the input should be validated, there is no guarantee that the data passed in is the performData returned from checkUpkeep. This could happen due to malicious keepers, racing keepers, or simply a state change while the performUpkeep transaction is waiting for confirmation. Always validate the data passed in.",
+            "params": {
+              "performData": "is the data which was passed back from the checkData simulation. If it is encoded, it can easily be decoded into other types by calling `abi.decode`. This data should not be trusted, and should be validated against the contract's current state."
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "checkUpkeep(bytes,int256)": {
+            "notice": "method that is simulated by the keepers to see if any work actually needs to be performed. This method does does not actually need to be executable, and since it is only ever simulated it can consume lots of gas."
+          },
+          "performUpkeep(bytes)": {
+            "notice": "method that is actually executed by the keepers, via the registry. The data returned by the checkUpkeep simulation will be passed into this method to actually be executed."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@chainlink/=lib/chainlink/contracts/",
+        ":@openzeppelin/=lib/openzeppelin-contracts/",
+        ":chainlink/=lib/chainlink/contracts/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":std/=lib/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/mocks/AutomationCompatibleInterfaceMock.sol": "AutomationCompatibleInterface"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/mocks/AutomationCompatibleInterfaceMock.sol": {
+        "keccak256": "0xf94c0c78bf6b8ecf728e3f951d3aa0444ac15820349ca50efbeeffd0b6573cac",
+        "urls": [
+          "bzz-raw://110834b3ffba6d09500f9aeb62ce7eeda999f71a1dc790dc45319eebab9e6e0b",
+          "dweb:/ipfs/QmSnw9xgMw6SuraHp2LwZW6i3gDyHD7uUKufsN97xaZdYm"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/mocks/AutomationCompatibleInterfaceMock.sol",
+    "id": 35410,
+    "exportedSymbols": {
+      "AutomationCompatibleInterface": [
+        35409
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:2250:46",
+    "nodes": [
+      {
+        "id": 35390,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:46",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 35409,
+        "nodeType": "ContractDefinition",
+        "src": "57:2224:46",
+        "nodes": [
+          {
+            "id": 35402,
+            "nodeType": "FunctionDefinition",
+            "src": "1089:120:46",
+            "nodes": [],
+            "documentation": {
+              "id": 35391,
+              "nodeType": "StructuredDocumentation",
+              "src": "101:985:46",
+              "text": " @notice method that is simulated by the keepers to see if any work actually\n needs to be performed. This method does does not actually need to be\n executable, and since it is only ever simulated it can consume lots of gas.\n @dev To ensure that it is never called, you may want to add the\n cannotExecute modifier from KeeperBase to your implementation of this\n method.\n @param checkData specified in the upkeep registration so it is always the\n same for a registered upkeep. This can easily be broken down into specific\n arguments using `abi.decode`, so multiple upkeeps can be registered on the\n same contract and easily differentiated by the contract.\n @return upkeepNeeded boolean to indicate whether the keeper should call\n performUpkeep or not.\n @return performData bytes that the keeper should call performUpkeep with, if\n upkeep is needed. If you would like to encode data to decode later, try\n `abi.encode`."
+            },
+            "functionSelector": "21d1fdd0",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "checkUpkeep",
+            "nameLocation": "1098:11:46",
+            "parameters": {
+              "id": 35396,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 35393,
+                  "mutability": "mutable",
+                  "name": "checkData",
+                  "nameLocation": "1125:9:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35402,
+                  "src": "1110:24:46",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 35392,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1110:5:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35395,
+                  "mutability": "mutable",
+                  "name": "fuzz",
+                  "nameLocation": "1140:4:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35402,
+                  "src": "1136:8:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int256",
+                    "typeString": "int256"
+                  },
+                  "typeName": {
+                    "id": 35394,
+                    "name": "int",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1136:3:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int256",
+                      "typeString": "int256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1109:36:46"
+            },
+            "returnParameters": {
+              "id": 35401,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 35398,
+                  "mutability": "mutable",
+                  "name": "upkeepNeeded",
+                  "nameLocation": "1169:12:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35402,
+                  "src": "1164:17:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 35397,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1164:4:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35400,
+                  "mutability": "mutable",
+                  "name": "performData",
+                  "nameLocation": "1196:11:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35402,
+                  "src": "1183:24:46",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 35399,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1183:5:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1163:45:46"
+            },
+            "scope": 35409,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 35408,
+            "nodeType": "FunctionDefinition",
+            "src": "2219:60:46",
+            "nodes": [],
+            "documentation": {
+              "id": 35403,
+              "nodeType": "StructuredDocumentation",
+              "src": "1213:1003:46",
+              "text": " @notice method that is actually executed by the keepers, via the registry.\n The data returned by the checkUpkeep simulation will be passed into\n this method to actually be executed.\n @dev The input to this method should not be trusted, and the caller of the\n method should not even be restricted to any single registry. Anyone should\n be able call it, and the input should be validated, there is no guarantee\n that the data passed in is the performData returned from checkUpkeep. This\n could happen due to malicious keepers, racing keepers, or simply a state\n change while the performUpkeep transaction is waiting for confirmation.\n Always validate the data passed in.\n @param performData is the data which was passed back from the checkData\n simulation. If it is encoded, it can easily be decoded into other types by\n calling `abi.decode`. This data should not be trusted, and should be\n validated against the contract's current state."
+            },
+            "functionSelector": "4585e33b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "performUpkeep",
+            "nameLocation": "2228:13:46",
+            "parameters": {
+              "id": 35406,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 35405,
+                  "mutability": "mutable",
+                  "name": "performData",
+                  "nameLocation": "2257:11:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35408,
+                  "src": "2242:26:46",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 35404,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2242:5:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2241:28:46"
+            },
+            "returnParameters": {
+              "id": 35407,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2278:0:46"
+            },
+            "scope": 35409,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "AutomationCompatibleInterface",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          35409
+        ],
+        "name": "AutomationCompatibleInterface",
+        "nameLocation": "67:29:46",
+        "scope": 35410,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 46
+}
