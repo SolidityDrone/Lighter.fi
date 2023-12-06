@@ -191,6 +191,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
         require(strategyToRemove.user == msg.sender, "Unauthorized");
         //delete UserStrategy struct in s_usersStrategies mapping
         delete s_usersStrategies[index];
+        s_usersStrategies[index].user = msg.sender;
         //emit RemovedUserStrategy event
         emit RemovedUserStrategy(msg.sender, index);
     }
