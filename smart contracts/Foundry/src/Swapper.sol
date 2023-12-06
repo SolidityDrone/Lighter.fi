@@ -31,14 +31,14 @@ interface IGenericSwapFacet  {
 
 contract Swapper {
     /**@dev Interface for generic_swap function in LiFi's diamond facet*/
-    IGenericSwapFacet public genericSwapFacet; 
+    IGenericSwapFacet internal genericSwapFacet; 
     /**@dev Hardcoded address to LiFi Diamond contract*/
-    address public immutable lifiDiamond = 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE;
+    address internal immutable lifiDiamond = 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE;
     
     /**@dev Integrator string using lifi-api*/
-    string public  integrator = "lifi-api";
+    string internal  integrator = "lifi-api";
     /**@dev referrer string using lifi-api*/
-    string public  referrer = "0x0000000000000000000000000000000000000000";
+    string internal  referrer = "0x0000000000000000000000000000000000000000";
 
     constructor(){
         genericSwapFacet = IGenericSwapFacet(lifiDiamond);
@@ -59,8 +59,8 @@ contract Swapper {
     * The calldata for the swap is then generated using the internal `ConcatCalldata` function.
     * Finally, the swap operation is initiated using the internal `swap` function, passing relevant parameters.
     */
-    function readResponseAndSwap(bytes memory data, uint amountIn, address receiver,  address tokenFrom, address tokenTo) public {
-        // require(msg.sender == upkeep), "Only Chainlink Upkeep");
+    function readResponseAndSwap(bytes memory data, uint amountIn, address receiver,  address tokenFrom, address tokenTo) internal {
+        
         (   
             bytes32[2] memory properties,
             bytes16[1] memory minOut,
@@ -79,7 +79,7 @@ contract Swapper {
         }
         path[path.length-1] = tokenTo;        
         bytes memory concatCalldata = ConcatCalldata(amountIn, minOut[0], path, routerSelector[0]);
-         address routerAddress = address(uint160(uint256(properties[1])));
+        address routerAddress = address(uint160(uint256(properties[1])));
         uint amountInAntiStack = amountIn;
         swap(properties[0], payable(receiver), uint256(uint128(minOut[0])), routerAddress, routerAddress, tokenFrom, tokenTo, amountInAntiStack, concatCalldata);
     }
