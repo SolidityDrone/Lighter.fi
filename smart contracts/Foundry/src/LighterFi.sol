@@ -18,21 +18,21 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
     
     using FunctionsRequest for FunctionsRequest.Request;
 
-    uint256 public s_usersStrategiesLength;
+    uint256 internal s_usersStrategiesLength;
     bytes32 public donID;
-    uint32 public gasLimit;
+    uint32  internal gasLimit;
     address public upkeepContract1;
-    uint64 public subscriptionId;
+    uint64  internal subscriptionId;
     address public upkeepContract2;
 
-    uint256 public strategyIndex;
-    address public usdcAddress;
+    uint256 internal strategyIndex;
+    address internal usdcAddress;
     bool public isPaused;
-    bool public isInitialized;
+    bool internal isInitialized;
     
     mapping(uint256=>UserStrategy) public s_usersStrategies;
     mapping(bytes32=>uint256) public requestsIds;
-
+    
     /**@dev source string for Chainlink Function call*/
     string source = 
         "const fC= 'pol';"
