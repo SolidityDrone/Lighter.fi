@@ -61,34 +61,6 @@ export const useRemoveStrategy = (index: Number) => {
 }
 
 
-// "inputs": [
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "index",
-// 				"type": "uint256"
-// 			},
-// 			{
-// 				"internalType": "address",
-// 				"name": "tokenTo",
-// 				"type": "address"
-// 			},
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "timeInterval",
-// 				"type": "uint256"
-// 			},
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "amountTokenIn",
-// 				"type": "uint256"
-// 			},
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "limit",
-// 				"type": "uint256"
-// 			}
-// 		]
-
 export const useUpgradeStrategy = (index: Number, timeRange: string, timeUnit: string | Number, tokenFrom: string, tokenToOption: any, amount: string, limit: string | Number) => {
 
 	// prepare transaction 
@@ -108,13 +80,15 @@ export const useUpgradeStrategy = (index: Number, timeRange: string, timeUnit: s
 		interval = 0
 	}
 
+	const tokenfrom = allowedTokens.polygonMumbai.USDC
+
 	const amountWithDecimals = Number(amount) * 1000000
-	const args: any[] = [index, tokenTo, interval, amountWithDecimals, limitOrder]
+	const args: any[] = [index, tokenFrom, tokenTo, interval, amountWithDecimals, limitOrder]
 
 	const { data: upgradeStrategyData, isLoading: isUpgradeStrategyLoading, isSuccess: isUpgradeStrategySuccess, write: upgradeStrategyWrite } = useContractWrite({
 		...baseConfig,
 		functionName: "upgradeStrategy",
 		args
 	})
-	return { data: upgradeStrategyData, isLoading: isUpgradeStrategyLoading, isSuccess: isUpgradeStrategySuccess, write: upgradeStrategyWrite }
+	return {  upgradeStrategyData,  isUpgradeStrategyLoading,  isUpgradeStrategySuccess,  upgradeStrategyWrite }
 }

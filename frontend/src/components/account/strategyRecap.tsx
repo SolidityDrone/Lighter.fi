@@ -8,20 +8,24 @@ import StrategyForm from '../startegy/strategyForm';
 
 interface Props {
   id: string,
-  nSwap: string,
+  interval: Number,
+  limit: Number
   tokenAddress: string,
   tokenLogo: any,
   type: string,
+  amount: Number,
   // updateStrategy: () => void
   // deleteStrategy: () => void
 }
 
 const StrategyRecap: FC<Props> = ({
-  nSwap,
+  interval,
   id,
+  limit,
   tokenAddress,
   tokenLogo,
   type,
+  amount,
   // updateStrategy,
   // deleteStrategy
 }) => {
@@ -29,7 +33,7 @@ const StrategyRecap: FC<Props> = ({
   const { removeStrategyData, isRemoveStrategyLoading, removeStrategyWrite } = useRemoveStrategy(Number(id))
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [isUpgradeModalOpen,setIsUpgradeModalOpen] = useState(false)
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
 
 
   const { isSuccess } = useWaitForTransaction({
@@ -69,7 +73,17 @@ const StrategyRecap: FC<Props> = ({
         closeModal={() => openCloseLoadingModal()} />
       <Modal isOpen={isUpgradeModalOpen}
         title="Update your strategy"
-        children={<StrategyForm />}
+        children={<StrategyForm isUpdate={true}
+          data={{
+            amount,
+            type: type,
+            interval,
+            limit,
+            token: tokenAddress,
+          }
+          }
+
+        />}
         closeModal={() => openCloseUpgradeModal()} />
       {
         isSuccess &&
@@ -86,16 +100,10 @@ const StrategyRecap: FC<Props> = ({
       <p><strong>Strategy ID: {id}</strong></p>
       <ul>
         <li>
-          <strong>Swapped {nSwap} times</strong>
-        </li>
-        <li>
           <strong>Type</strong>: {type}
         </li>
         <li>
-          Token: {tokenAddress}
-        </li>
-        <li>
-          {tokenLogo}
+          Token:  {tokenLogo}
         </li>
       </ul>
       <br />

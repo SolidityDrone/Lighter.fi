@@ -5,7 +5,7 @@ import Input from '../common/input';
 import Select from '../common/select';
 import Modal from '../common/modal';
 import DataRecap from './dataRecap';
-import { useCreateStrategy } from '@/contracts/lighterfi/methods';
+import { useCreateStrategy, useUpgradeStrategy } from '@/contracts/lighterfi/methods';
 import { availableTokensType } from '@/contracts/tokens';
 import Loading from '../common/loading';
 import Link from 'next/link';
@@ -41,10 +41,11 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
 
     const { approveERC20Write } = useApproveERC20(Number(amount));
 
-    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite } = useCreateStrategy(timeRange, timeUnit as Number, token1 as any, token2 as any, amount as string, limitOrder as Number, limitOrderType)
+    const { isCreateStrategyLoading, isCreateStrategySuccess, createStrategyData, createStrategyWrite, } = useCreateStrategy(timeRange, timeUnit as Number, token1 as any, token2 as any, amount as string, limitOrder as Number, limitOrderType)
+    const {  upgradeStrategyData,  isUpgradeStrategyLoading,  isUpgradeStrategySuccess,  upgradeStrategyWrite } = useUpgradeStrategy(Number(timeRange), timeUnit as string, token1 as any, token2 as any, amount as string, limitOrder as string, data?.limit as Number)
 
     const { isSuccess } = useWaitForTransaction({
-        hash: createStrategyData?.hash,
+        hash: createStrategyData?.hash || upgradeStrategyData?.hash,
     })
 
     const handleTimeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -111,7 +112,11 @@ const StrategyForm: FC<Props> = ({ isUpdate, data }) => {
 
     const handleApproveAndCreate = () => {
         approveERC20Write()
-        createStrategyWrite()
+        if (isUpdate){
+            upgradeStrategyWrite()
+        }else{
+            createStrategyWrite()
+        }
     }
 
     useEffect(() => {
