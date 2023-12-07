@@ -1,0 +1,33 @@
+const fC= '43114';
+        const fT=args[0];
+        const tT=args[1];
+        const fAd=args[2];
+        const fAm=args[3];
+        const lRUrl = `https://staging.li.quest/v1/quote?fromChain=43114&toChain=43114&fromToken=0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664&toToken=0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7&fromAddress=0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496&fromAmount=10000000&denyExchange=all&allowExchange=pangolin&allowExchange=sushiswap`;
+        const lR = await Functions.makeHttpRequest({
+            url: lRUrl,
+            method: 'GET',
+            headers: {
+                'accept': 'application/json',
+            },
+        });
+        const data = lR.data.transactionRequest.data;
+        const tD = lR.data.includedSteps[0].estimate.toolData;
+        function parsebs(bs) {
+            const ts = bs.slice(10);
+            const txId = ts.slice(0, 64);
+            const minOut = ts.slice(288, 320);
+            const router = tD.routerAddress.slice(2);
+            const selector = ts.slice(1664, 1672);
+            let middleToken1 = '';
+            let middleToken2 = '';
+            if (tD.path.length === 3){
+                middleToken1 = tD.path[1].slice(2);
+            }
+            if (tD.path.length === 4){
+                middleToken1 = tD.path[1].slice(2);
+                middleToken2 = tD.path[2].slice(2);
+            }
+            return txId+minOut+router+selector+middleToken1+middleToken2;
+        }
+        return (Functions.encodeString(parsebs(data)));
