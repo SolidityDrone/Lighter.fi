@@ -1163,7 +1163,12 @@ contract DataConsumerV3 {
     
     address[] feedList = 
         [
-            0x5498BB86BC934c8D34FDA08E81D444153d0D06aD     // avax Aggregator                       
+            0x0A77230d17318075983913bC2145DB16C7366156 //Avax
+            0x49ccd9ca821EfEab2b98c60dC60F518E765EDe9a //Link
+            0x976B3D034E162d8bD72D6b9C989d545b839003b0 //Weth
+            0x86442E3a98558357d46E6182F4b262f76c4fa26F //Wbtc
+            0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED //Aave
+            0x449A373A090d8A1e5F74c63Ef831Ceff39E94563 //Sushi              
         ];
     
     constructor() {}
