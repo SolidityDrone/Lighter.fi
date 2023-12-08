@@ -1,7 +1,7 @@
 # Lighter.Fi
 
 
-# Run readAndSwap via foundry
+## Run readAndSwap via foundry
 
 Since LiFi dosen't support fuji testnet, nor mumbai. We commented out the lines executing the trade.
 To test that it works properly you can follow these steps.
@@ -29,7 +29,7 @@ To test that it works properly you can follow these steps.
 If you did everything correctly yuou should be able to see the amount swapped USDC <> Wavax
 
 
-# Test and Coverage 
+## Test and Coverage 
   To run tests access foundry folder and run `forge test` can add `-vvv` for a deep stack trace
   Test that would fail in non mainnet fork environment are commented out. They'll revert if uncommented.
 
