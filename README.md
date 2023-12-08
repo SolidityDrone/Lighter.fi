@@ -7,26 +7,28 @@ Since LiFi dosen't support fuji testnet, nor mumbai. We commented out the lines 
 To test that it works properly you can follow these steps.
 - Navigate to: https://functions.chain.link/playground
 - Paste in https://github.com/SolidityDrone/onchain_dca/blob/main/smart%20contracts/Foundry/src/functionsJS/lifiapi_hardcoded 
-- Get the return and replace <resultfromchainlinkfunctions> in LighterFiMock.sol
+- Get the return and replace <resultfromPlayground> in LighterFiMock.sol
 
-    `function performUpkeepMock() public{
+```
+    function performUpkeepMock() public{
         UserStrategy memory strategy = s_usersStrategies[0];
         IERC20(usdcAvax).transferFrom(msg.sender, address(this), 10000000);
         IERC20(usdcAvax).approve(lifiDiamond, 10000000);
-        readResponseAndSwap(hex'<resultfromchainlinkfunctions>', strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
-    }`
-
+        readResponseAndSwap(hex'<resultfromPlayground>', strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
+    }
+```
 
 - Run `forge test --match-test testPerformMock -vvv --fork-url https://api.avax.network/ext/bc/C/rpc`
-
-`function testPerformMock() public {
+```
+function testPerformMock() public {
         deal(usdc, address(this), 10000000);
         IERC20(usdc).approve(address(lighter), 10000000);
         lighter.performUpkeepMock();
         console.log(IERC20(wavax).balanceOf(address(this)));
-}`
+}
+```
 
-If you did everything correctly yuou should be able to see the amount swapped USDC <> Wavax
+If you did everything correctly yuou should be able to see the amount swapped in the console.
 
 
 ## Test and Coverage 
