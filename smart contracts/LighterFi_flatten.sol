@@ -1173,7 +1173,7 @@ contract DataConsumerV3 {
     
     constructor() {}
 
-    uint public addressMappinglength;
+    uint internal addressMappinglength;
     mapping(address=>uint) public tokenIndexes;
     mapping(address=>bool) public tokenAllowed;
 
@@ -1200,7 +1200,7 @@ contract DataConsumerV3 {
     * @dev Internal function to batch query price data from multiple data feeds.
     * @return prices An array of price values retrieved from data feeds.
     */
-    function _batchQuery() internal view  returns (uint[] memory){
+    function _batchQuery() public view  returns (uint[] memory){
         uint length = feedList.length;
         uint[] memory prices = new uint[](length);
 
@@ -1519,7 +1519,7 @@ interface ILighterFi {
     event UpdatedUserStrategy(address indexed user, UserStrategy userStrategy, uint256 strategyIndex);
     event RequestReceived(bytes32 indexed requestId , uint256 strategyIndex);
     event Response(bytes32 indexed requestId, bytes response, bytes err);
-    event SwapExecuted(bytes32 indexed requestId, uint256 strategyIndex, uint256 amountIn, address user, address tokenIn, address tokenOut);
+    event SwapExecuted(bytes32 indexed requestId, uint256 strategyIndex, uint256 amountIn, uint256 amountOut, address user, address tokenIn, address tokenOut);
 }
 
 
@@ -2274,9 +2274,9 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
                 // DCA 
                 if (strategy.timeInterval != 0) {
                     timeCondition = block.timestamp >= strategy.nextExecution;
-                    // balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
-                    // allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
-                    upkeepNeeded = timeCondition/* && balanceCondition && allowanceCondition*/;
+                    balanceCondition = IERC20(usdcAddress).balanceOf(strategy.user) >= strategy.amount;
+                    allowanceCondition = IERC20(usdcAddress).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = timeCondition && balanceCondition && allowanceCondition;
                     performData = abi.encode(i, uint(0));
                  
                 }  
@@ -2285,9 +2285,9 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
                     //buy only if the token price is <= the limit set
                     //sell only if the token price is >= the limit set
                     limitCondition = strategy.tokenIn == usdcAddress ? prices[tokenIndexes[strategy.tokenOut]] <= strategy.limit : prices[tokenIndexes[strategy.tokenIn]] >= strategy.limit;
-                    // balanceCondition = IERC20(strategy.tokenIn).balanceOf(strategy.user) >= strategy.amount;
-                    // allowanceCondition = IERC20(strategy.tokenIn).allowance(strategy.user, address(this)) >= strategy.amount;
-                    upkeepNeeded = limitCondition /*&& balanceCondition && allowanceCondition*/;
+                    balanceCondition = IERC20(strategy.tokenIn).balanceOf(strategy.user) >= strategy.amount;
+                    allowanceCondition = IERC20(strategy.tokenIn).allowance(strategy.user, address(this)) >= strategy.amount;
+                    upkeepNeeded = limitCondition && balanceCondition && allowanceCondition;
                     performData = abi.encode(i, uint(0));
                 }   
                 if (upkeepNeeded){
@@ -2343,12 +2343,12 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
             if(strategy.limit>0) {
                 //delete UserStrategy struct in s_usersStrategies mapping
                 s_usersStrategies[index].limit = 0;
-                //emit RemovedUserStrategy event
-                emit RemovedUserStrategy(msg.sender, index);
             }
-            //IERC20(strategy.tokenIn).transferFrom(strategy.user, address(this), strategy.amount);
-            //readResponseAndSwap(strategy.lastResponse, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
-            emit SwapExecuted(requestId, index, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
+            uint startingBalance = IERC20(strategy.tokenOut).balanceOf(strategy.user);
+            IERC20(strategy.tokenIn).transferFrom(strategy.user, address(this), strategy.amount);
+            readResponseAndSwap(strategy.lastResponse, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
+            uint finalBalance = IERC20(strategy.tokenOut).balanceOf(strategy.user) - startingBalance;
+            emit SwapExecuted(requestId, index, strategy.amount, finalBalance, strategy.user, strategy.tokenIn, strategy.tokenOut);
         }
     }
 
