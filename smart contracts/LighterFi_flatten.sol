@@ -2311,7 +2311,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
         //if the fulfill request function had an error the upkeep must not be triggered
       
         upkeepNeeded = true;  
-        performData = abi.encode(log.topics[0], uint(1));
+        performData = abi.encode(log.topics[1], uint(1));
     }
 
     
