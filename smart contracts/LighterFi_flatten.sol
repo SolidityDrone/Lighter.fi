@@ -2361,7 +2361,7 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
         // Initialize the request with JS code
         req.initializeRequestForInlineJavaScript(source); 
         //load UserStrategy from mapping mapping
-        UserStrategy memory strategy = s_usersStrategies[index];
+        UserStrategy storage strategy = s_usersStrategies[index];
         //retrieve args as string[] for chainLink function Request encoding
         string[] memory args = generateArgForRequest(strategy.tokenIn, strategy.tokenOut, strategy.user, strategy.amount);
         // Set the arguments for the request
