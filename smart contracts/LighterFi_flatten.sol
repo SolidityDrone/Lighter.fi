@@ -1163,12 +1163,12 @@ contract DataConsumerV3 {
     
     address[] feedList = 
         [
-            0x0A77230d17318075983913bC2145DB16C7366156 //Avax
-            0x49ccd9ca821EfEab2b98c60dC60F518E765EDe9a //Link
-            0x976B3D034E162d8bD72D6b9C989d545b839003b0 //Weth
-            0x86442E3a98558357d46E6182F4b262f76c4fa26F //Wbtc
-            0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED //Aave
-            0x449A373A090d8A1e5F74c63Ef831Ceff39E94563 //Sushi              
+            0x0A77230d17318075983913bC2145DB16C7366156, //Avax
+            0x49ccd9ca821EfEab2b98c60dC60F518E765EDe9a, //Link
+            0x976B3D034E162d8bD72D6b9C989d545b839003b0, //Weth
+            0x86442E3a98558357d46E6182F4b262f76c4fa26F, //Wbtc
+            0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED, //Aave
+            0x449A373A090d8A1e5F74c63Ef831Ceff39E94563  //Sushi              
         ];
     
     constructor() {}
@@ -2206,7 +2206,6 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
         s_usersStrategies[index].user = msg.sender;
         //emit RemovedUserStrategy event
         emit RemovedUserStrategy(msg.sender, index);
- 
     }
 
     /**
@@ -2225,8 +2224,6 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
         require(timeInterval == 0 || limit == 0, "Either set a timeInterval or Limit");
         require(tokenFrom != tokenTo, "invalid strtagy param: tokens are equal");
         require(!(timeInterval == 0 && limit ==0), "Limit and TimeInterval are 0");
-        // Requirements for minimum timeInterval 
-        // Requirements for minimum limit (in $)
         
         //index check
         require(index <= s_usersStrategiesLength, "Index out of bounds");
@@ -2346,7 +2343,10 @@ contract LighterFi is FunctionsClient, ConfirmedOwner, ILighterFi, ILogAutomatio
             }
             uint startingBalance = IERC20(strategy.tokenOut).balanceOf(strategy.user);
             IERC20(strategy.tokenIn).transferFrom(strategy.user, address(this), strategy.amount);
+            // approve LIFI contract to execute the swap
+            IERC20(strategy.tokenIn).approve(lifiDiamond, strategy.amount);
             readResponseAndSwap(strategy.lastResponse, strategy.amount, strategy.user, strategy.tokenIn, strategy.tokenOut);
+            // check token balance after swap execution
             uint finalBalance = IERC20(strategy.tokenOut).balanceOf(strategy.user) - startingBalance;
             emit SwapExecuted(requestId, index, strategy.amount, finalBalance, strategy.user, strategy.tokenIn, strategy.tokenOut);
         }
