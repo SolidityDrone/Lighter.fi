@@ -47,6 +47,7 @@ function Strategies() {
         tokenOut
         type
         amount
+        triggers
       }
     }
   `;
@@ -169,6 +170,9 @@ function Strategies() {
                       DCA Volume
                     </th>
                     <th>
+                      Triggers
+                    </th>
+                    <th>
                       Limit
                     </th>
                     <th>
@@ -187,7 +191,7 @@ function Strategies() {
                       <tr key={strategy.strategyIndex}>
                       
                         <td>
-                          {strategy.type === 'Fulfilled' ? 'Limit' : strategy.type}
+                          {strategy.type === 'Fulfilled' ? 'Limit' : `${strategy.type} `} 
                         </td>
                         <td>
                           {addressNameMap[strategy.tokenIn?.toLowerCase()]} ➔ {addressNameMap[strategy.tokenOut?.toLowerCase()]}
@@ -203,6 +207,9 @@ function Strategies() {
                         </td>
                         <td>
                           {strategy.type === 'Limit' || strategy.type === 'Fulfilled' ? '-' : `$${strategy.dcaVolume}`}
+                        </td>
+                        <td>
+                          {strategy.type === 'DCA' ? strategy.triggers : '-'}
                         </td>
                         <td>
                         {strategy.type === 'DCA' ? '-' : `$${(web3.utils.fromWei(strategy.limit, 'ether') * 1e12).toFixed(6)}`}

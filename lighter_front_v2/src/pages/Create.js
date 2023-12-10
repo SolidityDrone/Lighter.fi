@@ -2,7 +2,6 @@ import { useQuery, gql } from '@apollo/client';
 import { useAccount } from 'wagmi';
 import {  Table, Container, Button, Row, Col, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-
 import { web3 } from '../index';
 import { lighterfiAddress } from '../index';
 import DealCountdown from './components/CountDown';
@@ -13,6 +12,9 @@ import TransactionDialog from './components/TransactionDialog';
 import WalletConnectDialog from './components/WalletConnectDialog';
 import TokenData from '../Tokens.json'; // Adjust the path accordingly
 import LighterFiABI from '../LighterFi_ABI.json';
+import ERC20_ABI from '../IERC20_ABI.json';
+
+
 
 function Create() {
 
@@ -26,13 +28,29 @@ function Create() {
   const [transactionMessage, setTransactionMessage] = useState('');
   const [processingTransaction, setProcessingTransaction] = useState(false);
   const [originalTokenIn, setOriginalTokenIn] = useState('');
+ 
+ 
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessingTransaction(true);
 
+ 
     try {
+
+      
       const lighterFiAddress = "0xf79D99E640d5E66486831FD0BC3e36a29d3148C0";
       const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
+      const tokenContract = new web3.eth.Contract(ERC20_ABI, '0xd8b917cf32022e35E09Bac2c6F16a64fa7D1DEC9');
+
+      const allowance = await tokenContract.methods.allowance(address, lighterFiAddress).call();
+      if (web3.utils.toBN(allowance).lt(web3.utils.toBN(web3.utils.toWei(amount)))) {
+       await tokenContract.methods.approve(lighterFiAddress, amount).send({ from: address });
+      }
+      
+      
+      
 
       if (strategyType === 'DCA') {
         const tokenFrom = '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664';
@@ -70,28 +88,44 @@ function Create() {
   };
 
 
+
+  useEffect(() => {
+    if (transactionMessage) {
+      const timeout = setTimeout(() => {
+        setTransactionMessage('');
+      }, 3500);
+
+   
+    }
+  }, [transactionMessage]);
+
   useEffect(() => {
     // If DCA is selected, set tokenIn to the address of USDC
     if (strategyType === 'DCA') {
       setTokenIn('0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664');
     } else if (strategyType === 'Limit') {
       // Listen to changes in tokenIn and tokenOut
-      if (tokenIn !== '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664') {
+      if (tokenIn !== '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664' && tokenOut !== '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664') {
         // If tokenIn is different from USDC, set tokenOut to USDC
-        setTokenOut('0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664');
-      } else if (tokenOut !== '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664' && tokenIn === '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664') {
-        // If tokenOut is different from USDC and tokenIn is already USDC, set tokenIn to USDC
-        setTokenOut('0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664');
-      }
+        setTokenIn('0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664');
+      } 
     }
   }, [strategyType, tokenIn, tokenOut]);
 
+ 
 
 
   const renderStrategyFields = () => {
+    
     if (strategyType === 'DCA') {
       return (
+     
         <>
+          
+          {processingTransaction && (
+          <LoadingWheel text="Waiting for confirmation..." />
+        )}
+    
           <Form.Group className="mb-3" controlId="amount">
             <Form.Label>Amount</Form.Label>
             <Form.Control
@@ -118,6 +152,9 @@ function Create() {
     } else if (strategyType === 'Limit') {
       return (
         <>
+         {processingTransaction && (
+          <LoadingWheel text="Waiting for confirmation..." />
+        )}
           <Form.Group className="mb-3" controlId="amount">
             <Form.Label>Amount</Form.Label>
             <Form.Control
@@ -130,7 +167,7 @@ function Create() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="limitPrice">
-            <Form.Label>Limit Price</Form.Label>
+            <Form.Label>Limit Price (in dollars)</Form.Label>
             <Form.Control
               type="number"
               placeholder="Enter limit price"
@@ -147,6 +184,8 @@ function Create() {
   };
 
   return (
+    <>
+   
     
     <Container>
       <div className='formBox'>
@@ -211,15 +250,12 @@ function Create() {
         </Button>
       </Form>
 
-      {transactionMessage && (
-        <div className="mt-3">
-          <strong>{transactionMessage}</strong>
-        </div>
-      )}
+   
       </div>
       </div>
     </Container>
- 
+    {transactionMessage && <TransactionDialog message={transactionMessage} />} 
+    </>
   );
 }
 
