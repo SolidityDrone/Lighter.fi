@@ -1,0 +1,28 @@
+type Strategy @entity(immutable: false) {
+  id: ID!
+  type: String!
+  user: Bytes! # address
+  tokenIn: Bytes! # address
+  tokenOut: Bytes! # address
+  timeInterval: BigInt! # uint256
+  nextExecution: BigInt! # uint256
+  amount: BigInt! # uint256
+  limit: BigInt! # uint256
+  strategyIndex: BigInt! # uint256
+  blockTimestamp: BigInt!
+  dcaVolume: BigInt   # uint256
+  limitAmountOut: BigInt # uint256
+  triggers: BigInt # uint256
+}
+
+type User @entity(immutable: false){
+  id: ID!
+  strategies: [Strategy!] @hasMany(name: "strategies", opposite: "user")
+  totalVolume: BigInt
+}
+
+type Protocol @entity(immutable: false){
+  id: ID!
+  protocolTotalVolume: BigInt!
+  protocolSwaps: BigInt!
+}

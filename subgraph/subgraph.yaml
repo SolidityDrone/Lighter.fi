@@ -1,0 +1,39 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: avalanche
+    source:
+      address: "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5"
+      abi: Contract
+      startBlock: 38865797
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - NewUserStrategy
+        - RemovedUserStrategy
+        - RequestReceived
+        - Response
+        - SwapExecuted
+        - UpdatedUserStrategy
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: NewUserStrategy(indexed address,(address,address,address,uint256,uint256,uint256,uint256,bytes),uint256)
+          handler: handleNewUserStrategy
+        - event: RemovedUserStrategy(indexed address,uint256)
+          handler: handleRemovedUserStrategy
+        - event: RequestReceived(indexed bytes32,uint256)
+          handler: handleRequestReceived
+        - event: Response(indexed bytes32,bytes,bytes)
+          handler: handleResponse
+        - event: SwapExecuted(indexed bytes32,uint256,uint256,uint256,address,address,address)
+          handler: handleSwapExecuted
+        - event: UpdatedUserStrategy(indexed address,(address,address,address,uint256,uint256,uint256,uint256,bytes),uint256)
+          handler: handleUpdatedUserStrategy
+      file: ./src/contract.ts
