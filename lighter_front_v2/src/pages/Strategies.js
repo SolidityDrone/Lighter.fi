@@ -170,7 +170,7 @@ function Strategies() {
                       DCA Volume
                     </th>
                     <th>
-                      Triggers
+                      Nr. of Triggers
                     </th>
                     <th>
                       Limit

@@ -93,9 +93,8 @@ function Create() {
     if (transactionMessage) {
       const timeout = setTimeout(() => {
         setTransactionMessage('');
-      }, 3500);
+      }, 6500);
 
-   
     }
   }, [transactionMessage]);
 
