@@ -234,6 +234,7 @@ function Strategies() {
           </div>
         </Container>
       ) : (
+        
         <WalletConnectDialog />
       )}
        {transactionMessage && <TransactionDialog message={transactionMessage} />} 

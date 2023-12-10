@@ -245,7 +245,7 @@ function Create() {
 
         {renderStrategyFields()}
 
-        <Button variant="primary" type="submit" disabled={processingTransaction}>
+        <Button variant="primary" type="submit" disabled={processingTransaction || !address}>
           {processingTransaction ? 'Processing...' : 'Create Strategy'}
         </Button>
       </Form>
@@ -254,7 +254,8 @@ function Create() {
       </div>
       </div>
     </Container>
-    <WalletConnectDialog />
+    
+    
     {transactionMessage && <TransactionDialog message={transactionMessage} />} 
     </>
   );

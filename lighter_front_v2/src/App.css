@@ -5,7 +5,7 @@
 
 
 .btn {
-  color: rgb(78, 53, 53) !important;
+  color: rgb(255, 255, 255) !important;
   background-color: #3396FF !important;
   border-radius: 4px !important;
   border-color: #3396FF !important;
@@ -279,7 +279,7 @@ th {
 }
 
 .nav-links:hover {
-  color: #3396FF !important;
+  color: #eaebec !important;
 }
 
 .nav-links:focus {
@@ -293,7 +293,7 @@ th {
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #3396FF;
+  background-color: #ffffff;
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
