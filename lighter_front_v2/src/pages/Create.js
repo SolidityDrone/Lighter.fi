@@ -46,20 +46,35 @@ function Create() {
   
   
   const renderTokenPrices = () => {
-    return (
-      <div>
+    if (strategyType === 'Limit') { // Only render if strategyType is 'Limit'
+      const halfLength = Math.ceil(prices.length / 2);
 
-        <ul style={{ listStyleType: 'none', marginTop: '14px' }}>
-          {prices.map((number, index) => (
-            <li key={index} style={{ marginBottom: '-2px', fontSize: '12px'}}>
-              {`${tokens[index]}: $${(Number(web3.utils.fromWei(number.toString(), 'ether')) * 1e12).toFixed(2)}`}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+      const leftColumn = prices.slice(0, halfLength);
+      const rightColumn = prices.slice(halfLength);
+
+      const renderColumn = (column) => {
+        return (
+          <ul style={{ listStyleType: 'none', marginTop: '14px' }}>
+            {column.map((number, index) => (
+              <li key={index} style={{ marginBottom: '-2px', fontSize: '12px' }}>
+                {`${tokens[index]}: $${(Number(web3.utils.fromWei(number.toString(), 'ether')) * 1e12).toFixed(2)}`}
+              </li>
+            ))}
+          </ul>
+        );
+      };
+
+      return (
+        <div style={{ display: 'flex', gap: '1px' }}>
+          <div style={{ flex: '1' }}>{renderColumn(leftColumn)}</div>
+          <div style={{ flex: '1' }}>{renderColumn(rightColumn)}</div>
+        </div>
+      );
+    }
+
+    return null;
   };
-
+  
   useEffect(() => {
     // Define a function to call getPrices every 15 seconds
     const fetchData = async () => {
@@ -230,85 +245,78 @@ function Create() {
 
   return (
     <>
-   
-    
-    <Container>
-      <div className='formBox'>
-        <div className='formInner'>
+      <Container>
+        <div className="formBox">
+          <div className="formInner">
+            <h2>Create a Strategy</h2>
 
-     
-      <h2>Create a Strategy</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="strategyType">
-          <Form.Label>Strategy Type</Form.Label>
-          <Form.Control
-            as="select"
-            value={strategyType}
-            onChange={(e) => setStrategyType(e.target.value)}
-            required
-          >
-            <option value="" disabled>Select Strategy Type</option>
-            <option value="DCA">DCA</option>
-            <option value="Limit">Limit Order</option>
-          </Form.Control>
-        </Form.Group>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="strategyType">
+                <Form.Label>Strategy Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={strategyType}
+                  onChange={(e) => setStrategyType(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>Select Strategy Type</option>
+                  <option value="DCA">DCA</option>
+                  <option value="Limit">Limit Order</option>
+                </Form.Control>
+              </Form.Group>
 
-        <Row className="mb-3">
-    <Col>
-      <Form.Group controlId="tokenIn">
-        <Form.Label>Token In</Form.Label>
-        <Form.Control
-          as="select"
-          value={tokenIn}
-          onChange={(e) => setTokenIn(e.target.value)}
-          required
-          disabled={strategyType === 'DCA'}
-        >
-          <option value="" disabled>Select Token In</option>
-          {TokenData.tokens.map((token) => (
-            <option key={token.address} value={token.address}>
-              {token.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-    </Col>
-    <Col>
-      <Form.Group controlId="tokenOut">
-        <Form.Label>Token Out</Form.Label>
-        <Form.Control
-          as="select"
-          value={tokenOut}
-          onChange={(e) => setTokenOut(e.target.value)}
-          required
-        >
-          <option value="" disabled>Select Token Out</option>
-          {TokenData.tokens.map((token) => (
-            <option key={token.address} value={token.address}>
-              {token.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-    </Col>
-  </Row>
+              <Row className="mb-3">
+                <Col>
+                  <Form.Group controlId="tokenIn">
+                    <Form.Label>Token In</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={tokenIn}
+                      onChange={(e) => setTokenIn(e.target.value)}
+                      required
+                      disabled={strategyType === 'DCA'}
+                    >
+                      <option value="" disabled>Select Token In</option>
+                      {TokenData.tokens.map((token) => (
+                        <option key={token.address} value={token.address}>
+                          {token.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="tokenOut">
+                    <Form.Label>Token Out</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={tokenOut}
+                      onChange={(e) => setTokenOut(e.target.value)}
+                      required
+                    >
+                      <option value="" disabled>Select Token Out</option>
+                      {TokenData.tokens.map((token) => (
+                        <option key={token.address} value={token.address}>
+                          {token.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {renderStrategyFields()}
+              {strategyType === 'Limit' && renderTokenPrices()} {/* Display token prices only if strategyType is 'Limit' */}
+              {renderStrategyFields()}
 
-        <Button variant="primary" type="submit" disabled={processingTransaction || !address}>
-          {processingTransaction ? 'Processing...' : 'Create Strategy'}
-        </Button>
+              <Button variant="primary" type="submit" disabled={processingTransaction || !address}>
+                {processingTransaction ? 'Processing...' : 'Create Strategy'}
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </Container>
 
-        {renderTokenPrices()}
-      </Form>
-
-   
-      </div>
-      </div>
-    </Container>
-   
-    
-    {transactionMessage && <TransactionDialog message={transactionMessage} />} 
+      {transactionMessage && <TransactionDialog message={transactionMessage} />} 
     </>
   );
 }
