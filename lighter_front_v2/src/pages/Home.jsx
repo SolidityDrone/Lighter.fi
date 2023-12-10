@@ -1,6 +1,7 @@
 import React from 'react';
 import backgroundImage from './Lighter.Fi.png'; // Import the image
-import { Card, CardContent, Typography } from '@mui/material'; // Import Material-UI components
+import { Card, CardContent, Typography, Grid } from '@mui/material'; // Import Material-UI components
+import { Create, Android, Autorenew } from '@mui/icons-material'; // Import Material-UI icons
 import './Home.css'; // Import a CSS file to define styles
 
 const Home = () => {
@@ -10,7 +11,7 @@ const Home = () => {
       <img src={backgroundImage} alt="Background" className="background-image" />
       <div className="content">
         <h1 className="title" style={{ fontSize: '90px' }}>
-          LighterFi
+          Lighter.Fi
         </h1>
         <p className="subtitle" style={{ fontSize: '24px' }}>
           Decentralized DCA and Limit Order platform
@@ -19,7 +20,8 @@ const Home = () => {
 
       <div className="card-container">
         <Card className="transparent-card">
-          <CardContent>
+          <CardContent className="centered-content">
+            <Create fontSize="large" className="icon" />
             <Typography variant="h6" className="card-title">Create your strategy</Typography>
             <Typography variant="subtitle1" className="card-subtitle">
               DCA: Set how often to buy a token<br />
@@ -28,18 +30,30 @@ const Home = () => {
           </CardContent>
         </Card>
         <Card className="transparent-card">
-          <CardContent>
+          <CardContent className="centered-content">
+            <Android fontSize="large" className="icon" />
             <Typography variant="h6" className="card-title">Enjoy the automatic execution of your strategy</Typography>
             <Typography variant="subtitle1" className="card-subtitle">
-              Give token approvals to LighterFi and forget about it. Powered by Chainlink Automation
+              Give token approvals to Lighter.Fi contract and forget about it. Powered by Chainlink Automation
             </Typography>
           </CardContent>
         </Card>
         <Card className="transparent-card">
-          <CardContent>
+          <CardContent className="centered-content">
+            <Autorenew fontSize="large" className="icon" />
             <Typography variant="h6" className="card-title">Leverage the most efficient on-chain swap protocol</Typography>
             <Typography variant="subtitle1" className="card-subtitle">
-            The automatic swap is powered by LIFI Aggregator using Chainlink Functions
+              The automatic swap is powered by LIFI Aggregator using Chainlink Functions
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="additional-card-container">
+        <Card className="additional-card">
+          <CardContent>
+            <Typography variant="body1" className="additional-text">
+              Lighter.Fi leverages the Chainlink stack (Automation with a Custom Logic trigger and Log trigger, Price Feed and Functions) to offer the first efficient & multi-AMM easy-to-use swap protocol. We built a DCA/Limit Order platform using this new on-chain swap primitive. Build your own DeFi solution!
             </Typography>
           </CardContent>
         </Card>

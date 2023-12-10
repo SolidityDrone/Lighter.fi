@@ -170,7 +170,7 @@ function Strategies() {
                       DCA Volume
                     </th>
                     <th>
-                      Triggers
+                      Nr. of Triggers
                     </th>
                     <th>
                       Limit
@@ -217,11 +217,7 @@ function Strategies() {
                         </td>
                         <td>
                           {strategy.type === 'Limit' ? '-' : strategy.limitAmountOut}
-                        </td>
-                        {/* Update Column */}
-                        <td>
-                          <Button variant="primary" onClick={() => handleUpdate(strategy.strategyIndex)}>Update</Button>
-                        </td>
+                        </td>                        
                         {/* Delete Column */}
                         <td>
                           <Button variant="danger" onClick={() => handleDelete(strategy.strategyIndex)}>Delete</Button>
