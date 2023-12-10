@@ -254,6 +254,7 @@ function Create() {
       </div>
       </div>
     </Container>
+    <WalletConnectDialog />
     {transactionMessage && <TransactionDialog message={transactionMessage} />} 
     </>
   );
