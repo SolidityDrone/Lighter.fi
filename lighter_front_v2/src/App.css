@@ -52,13 +52,13 @@
 }
 .formBox {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(13, 13, 13);
   border-radius: 6px;
   width: 500px;
-  height: 680px;
+  height: 580px;
   color: rgb(255, 255, 255);
   box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.305) !important;
 }
@@ -431,30 +431,7 @@ a {
 
 
 
-.bg-container-home {
-  position: absolute;
-  background-image: url('./assets/svg-background.svg');
-  background-repeat: no-repeat;
-  height: 90vh;
-  width: 100%;
-  background-size: cover;
-  z-index: 1;
-  opacity: 75%;
-}
 
-.bg-container-home-vertical{
-  position: absolute;
-  background-image: url('./assets/svg-background.svg');
-  background-repeat: no-repeat;
-  height: 100%;
-  width: 63%;
-  background-size: cover;
-  transform: rotate(-90deg);
-  overflow: hidden;
-  z-index: 1;
-  top: -10%;
-  opacity: 15%;
-}
 
 .mhorizontal-auto {
 
@@ -504,15 +481,7 @@ a {
     z-index: 3 !important;
     width: 100%;
   }
-  .bg-container-home {
-    position: absolute;
-    background-image: url('./assets/svg-background.svg');
-    background-repeat: no-repeat;
-    height: 80%;
-    width: 100%;
-    background-size: cover;
-    
-  }
+ 
   
   .social-logo{
     margin-top: 5px;

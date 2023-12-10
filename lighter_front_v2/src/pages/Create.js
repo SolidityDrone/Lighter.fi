@@ -28,15 +28,62 @@ function Create() {
   const [transactionMessage, setTransactionMessage] = useState('');
   const [processingTransaction, setProcessingTransaction] = useState(false);
   const [originalTokenIn, setOriginalTokenIn] = useState('');
- 
- 
- 
+  const [prices, setPrices] = useState([]);
+  const tokens = ['AVAX', 'LINK', 'WETH', 'WBTC', 'AAVE', 'SUSHI'];
+
+  const getPrices = async () => {
+    try {
+      const lighterFiAddress = "0xf79D99E640d5E66486831FD0BC3e36a29d3148C0";
+      const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
+      const newPrices = await lighterfiContract.methods._batchQuery().call();
+     
+      setPrices(newPrices);
+      console.log('Prices updated:', newPrices);
+    } catch (error) {
+      console.error('Error fetching prices:', error);
+    }
+  };
+  
+  
+  const renderTokenPrices = () => {
+    return (
+      <div>
+
+        <ul style={{ listStyleType: 'none', marginTop: '14px' }}>
+          {prices.map((number, index) => (
+            <li key={index} style={{ marginBottom: '-2px', fontSize: '12px'}}>
+              {`${tokens[index]}: $${(Number(web3.utils.fromWei(number.toString(), 'ether')) * 1e12).toFixed(2)}`}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    // Define a function to call getPrices every 15 seconds
+    const fetchData = async () => {
+      await getPrices();
+    };
+
+    // Call fetchData initially
+    fetchData();
+
+    // Set up an interval to call fetchData every 15 seconds
+    const intervalId = setInterval(fetchData, 15000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // The empty dependency array ensures that useEffect runs only once after the initial render
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessingTransaction(true);
 
- 
+    
     try {
 
       
@@ -112,7 +159,6 @@ function Create() {
     }
   }, [strategyType, tokenIn, tokenOut]);
 
- 
 
 
   const renderStrategyFields = () => {
@@ -208,57 +254,65 @@ function Create() {
           </Form.Control>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="tokenIn">
-          <Form.Label>Token In</Form.Label>
-          <Form.Control
-            as="select"
-            value={tokenIn}
-            onChange={(e) => setTokenIn(e.target.value)}
-            required 
-            disabled={strategyType === 'DCA'}
-          >
-            <option value="" disabled>Select Token In</option>
-            {TokenData.tokens.map((token) => (
-              <option key={token.address} value={token.address}>
-                {token.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="tokenOut">
-          <Form.Label>Token Out</Form.Label>
-          <Form.Control
-            as="select"
-            value={tokenOut}
-            onChange={(e) => setTokenOut(e.target.value)}
-            required
-          >
-            <option value="" disabled>Select Token Out</option>
-            {TokenData.tokens.map((token) => (
-              <option key={token.address} value={token.address}>
-                {token.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+        <Row className="mb-3">
+    <Col>
+      <Form.Group controlId="tokenIn">
+        <Form.Label>Token In</Form.Label>
+        <Form.Control
+          as="select"
+          value={tokenIn}
+          onChange={(e) => setTokenIn(e.target.value)}
+          required
+          disabled={strategyType === 'DCA'}
+        >
+          <option value="" disabled>Select Token In</option>
+          {TokenData.tokens.map((token) => (
+            <option key={token.address} value={token.address}>
+              {token.name}
+            </option>
+          ))}
+        </Form.Control>
+      </Form.Group>
+    </Col>
+    <Col>
+      <Form.Group controlId="tokenOut">
+        <Form.Label>Token Out</Form.Label>
+        <Form.Control
+          as="select"
+          value={tokenOut}
+          onChange={(e) => setTokenOut(e.target.value)}
+          required
+        >
+          <option value="" disabled>Select Token Out</option>
+          {TokenData.tokens.map((token) => (
+            <option key={token.address} value={token.address}>
+              {token.name}
+            </option>
+          ))}
+        </Form.Control>
+      </Form.Group>
+    </Col>
+  </Row>
 
         {renderStrategyFields()}
 
         <Button variant="primary" type="submit" disabled={processingTransaction || !address}>
           {processingTransaction ? 'Processing...' : 'Create Strategy'}
         </Button>
+
+        {renderTokenPrices()}
       </Form>
 
    
       </div>
       </div>
     </Container>
-    
+   
     
     {transactionMessage && <TransactionDialog message={transactionMessage} />} 
     </>
   );
 }
+
 
 export default Create;
