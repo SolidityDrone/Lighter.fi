@@ -31,7 +31,7 @@
     color: white; /* Set the text color to white for better visibility */
     margin: 15px;
     width: 300px; /* Set the width of the cards as desired */
-    height: 200px; /* Set a fixed height for all cards */
+    height: 250px; /* Set a fixed height for all cards */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Vertically center the content */
@@ -50,7 +50,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 16px; /* Adjust the gap as needed */;
   }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+  }
+  
+  .icon {
+    margin-bottom: 20px; /* Adjust this margin as needed to separate the icon from the title */
+  }
+
+  .centered-content {
+    text-align: center;
+  }
+  .additional-card-container {
+    flex-grow: 1; /* Allow the last card container to grow and take remaining space */
+  }
+  
+  .additional-card {
+    height: 100px; /* Set the height of the last card to your desired value, e.g., 300px */
+    width: 993px; /* Set the width of the last card to your desired value, e.g., 300px */
+    margin-top: 20px;
+    margin-left: 245px; /* Set the left margin (space from the left) for the last card */
+  }
+  
+
+  
   
  
   
