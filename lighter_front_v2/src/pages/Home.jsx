@@ -11,7 +11,7 @@ const Home = () => {
       <img src={backgroundImage} alt="Background" className="background-image" />
       <div className="content">
         <h1 className="title" style={{ fontSize: '90px' }}>
-          LighterFi
+          Lighter.Fi
         </h1>
         <p className="subtitle" style={{ fontSize: '24px' }}>
           Decentralized DCA and Limit Order platform
@@ -34,7 +34,7 @@ const Home = () => {
             <Android fontSize="large" className="icon" />
             <Typography variant="h6" className="card-title">Enjoy the automatic execution of your strategy</Typography>
             <Typography variant="subtitle1" className="card-subtitle">
-              Give token approvals to LighterFi and forget about it. Powered by Chainlink Automation
+              Give token approvals to Lighter.Fi contract and forget about it. Powered by Chainlink Automation
             </Typography>
           </CardContent>
         </Card>
@@ -53,7 +53,7 @@ const Home = () => {
         <Card className="additional-card">
           <CardContent>
             <Typography variant="body1" className="additional-text">
-              LighterFi leverages the Chainlink stack (Automation with a Custom Logic trigger and Log trigger, Price Feed and Functions) to offer the first efficient & multi-AMM easy-to-use swap protocol. We built a DCA/Limit Order platform using this new on-chain swap primitive. Build your own DeFi solution!
+              Lighter.Fi leverages the Chainlink stack (Automation with a Custom Logic trigger and Log trigger, Price Feed and Functions) to offer the first efficient & multi-AMM easy-to-use swap protocol. We built a DCA/Limit Order platform using this new on-chain swap primitive. Build your own DeFi solution!
             </Typography>
           </CardContent>
         </Card>
