@@ -50,6 +50,10 @@ export const CustomConnectButton = () => {
                     className="btn btn-primary btn-sm normal-case h-10 w-36 text-sm"
                     onClick={openConnectModal}
                     type="button"
+                    style={{
+                      backgroundColor: 'blue',
+                      color: 'white',
+                    }}
                   >
                     Connect Wallet
                   </button>

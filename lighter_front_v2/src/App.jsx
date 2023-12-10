@@ -1,7 +1,5 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
-
-import discordlogo from './assets/svg-discord.png';
-import twitterlogo from './assets/svg-twitter.png';
+import githublogo from './assets/svg-github.png';
 import { Link } from "react-router-dom";
 import {
   EthereumClient,
@@ -139,25 +137,23 @@ function NavMain() {
 />
           <Navbar.Collapse className="justify-content-end">
             <Nav className="me-auto">
-              <Link onClick={handleNavItemClick} className="nav-links" to="/Create">Home</Link>
+              <Link onClick={handleNavItemClick} className="nav-links" to="/">Home</Link>
               <Link onClick={handleNavItemClick} className="nav-links" to="/Create">Create</Link>
               <Link onClick={handleNavItemClick} className="nav-links" to="/Strategies">Orders</Link>
             </Nav>
-            <a href="#">
-            <img 
-              
-              alt=""
-              src={discordlogo}
-              height="30"
-              className="social-logo"/>
-              </a>
-              <a href="#">
-            <img 
-              alt=""
-              src={twitterlogo}
-              height="30"
-              className="social-logo"/>
-              </a>
+            <a
+              className="github-button"
+              href="https://github.com/SolidityDrone/onchain_dca/tree/main"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                alt="GitHub"
+                src={githublogo}
+                height="30"
+                className="social-logo"
+              />
+            </a>
             <div className="wagmi-btn-container">
   
               <Web3Button  className="web3button"/>

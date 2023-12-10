@@ -27,6 +27,7 @@ export const useCreateStrategy = (timeRange: string, timeUnit: string | Number, 
 		tokento = allowedTokens.polygonMumbai[riskyToken] // wrapped matic
 		tokenfrom = allowedTokens.polygonMumbai[stableToken] // USDC
 	}
+	console.log(allowedTokens.polygonMumbai[riskyToken], "allowedTokens.polygonMumbai[riskyToken]")
 
 	// time interval or limit
 	let interval
@@ -38,9 +39,15 @@ export const useCreateStrategy = (timeRange: string, timeUnit: string | Number, 
 		limitOrder = Number(limit) * 1000000
 		interval = 0
 	}
+	console.log(tokenfrom, "tokenfrom")
+	console.log(tokento, "tokento")
+	console.log(interval, "interval")
+	
+	console.log(limitOrder, "limitOrder")
 
 	const amountWithDecimals = Number(amount) * 1000000
-	const args: any[] = [tokenfrom, tokento, interval, amountWithDecimals, limitOrder]
+	console.log(amountWithDecimals, "amountWithDecimals")
+	const args: any[] = [tokenfrom, "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", interval, amountWithDecimals, limitOrder]
 
 	const { data: createStrategyData, isLoading: isCreateStrategyLoading, isSuccess: isCreateStrategySuccess, write: createStrategyWrite } = useContractWrite({
 		...baseConfig,
