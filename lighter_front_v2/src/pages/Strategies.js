@@ -217,11 +217,7 @@ function Strategies() {
                         </td>
                         <td>
                           {strategy.type === 'Limit' ? '-' : strategy.limitAmountOut}
-                        </td>
-                        {/* Update Column */}
-                        <td>
-                          <Button variant="primary" onClick={() => handleUpdate(strategy.strategyIndex)}>Update</Button>
-                        </td>
+                        </td>                        
                         {/* Delete Column */}
                         <td>
                           <Button variant="danger" onClick={() => handleDelete(strategy.strategyIndex)}>Delete</Button>
