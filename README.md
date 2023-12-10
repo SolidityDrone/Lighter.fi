@@ -1,13 +1,16 @@
 # Lighter.Fi
 
+Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
+
+Avalanche fuji testnet contract address:     0xf79d99e640d5e66486831fd0bc3e36a29d3148c0
 
 ## Run readAndSwap via foundry
 
-Since LiFi dosen't support fuji testnet, nor mumbai. We commented out the lines executing the trade.
+Since LiFi dosen't support fuji testnet, nor mumbai. Even tho the contract is live on mainnet, we reccomend testing the integration via foundry
 To test that it works properly you can follow these steps.
 - Navigate to: https://functions.chain.link/playground
 - Paste in https://github.com/SolidityDrone/onchain_dca/blob/main/smart%20contracts/Foundry/src/functionsJS/lifiapi_hardcoded 
-- Get the return and replace <resultfromPlayground> in LighterFiMock.sol
+- Get the return AS BYTES and replace <resultfromPlayground> in LighterFiMock.sol
 
 ```
     function performUpkeepMock() public{
