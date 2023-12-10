@@ -3,7 +3,7 @@
   "version": "2.2.1",
   "private": true,
   "scripts": {
-    "build": "webpack --config webpack.dev.js",
+    "build": "react-scripts build",
     "dev": "react-scripts start"
   },
   "dependencies": {
