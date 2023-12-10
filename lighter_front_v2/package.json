@@ -3,6 +3,7 @@
   "version": "2.2.1",
   "private": true,
   "scripts": {
+    "build": "webpack --config webpack.dev.js",
     "dev": "react-scripts start"
   },
   "dependencies": {
@@ -34,8 +35,7 @@
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "wagmi": "0.12.2",
-    "web3": "^1.9.0",
-    "webpack": "5.76.3"
+    "web3": "^1.9.0"
   },
   "browserslist": {
     "production": [
@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "webpack": "^5.89.0",
     "webpack-cli": "^5.0.1"
   }
 }
