@@ -48,32 +48,33 @@ function Create() {
   const renderTokenPrices = () => {
     if (strategyType === 'Limit') { // Only render if strategyType is 'Limit'
       const halfLength = Math.ceil(prices.length / 2);
-
+  
       const leftColumn = prices.slice(0, halfLength);
       const rightColumn = prices.slice(halfLength);
-
-      const renderColumn = (column) => {
+  
+      const renderColumn = (column, startIndex) => {
         return (
           <ul style={{ listStyleType: 'none', marginTop: '14px' }}>
             {column.map((number, index) => (
               <li key={index} style={{ marginBottom: '-2px', fontSize: '12px' }}>
-                {`${tokens[index]}: $${(Number(web3.utils.fromWei(number.toString(), 'ether')) * 1e12).toFixed(2)}`}
+                {`${tokens[startIndex + index]}: $${(Number(web3.utils.fromWei(number.toString(), 'ether')) * 1e12).toFixed(2)}`}
               </li>
             ))}
           </ul>
         );
       };
-
+  
       return (
-        <div style={{ display: 'flex', gap: '1px' }}>
-          <div style={{ flex: '1' }}>{renderColumn(leftColumn)}</div>
-          <div style={{ flex: '1' }}>{renderColumn(rightColumn)}</div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ flex: '1' }}>{renderColumn(leftColumn, 0)}</div>
+          <div style={{ flex: '1' }}>{renderColumn(rightColumn, halfLength)}</div>
         </div>
       );
     }
-
+  
     return null;
   };
+  
   
   useEffect(() => {
     // Define a function to call getPrices every 15 seconds
