@@ -14,6 +14,13 @@ import TokenData from '../Tokens.json'; // Adjust the path accordingly
 import LighterFiABI from '../LighterFi_ABI.json';
 import ERC20_ABI from '../IERC20_ABI.json';
 
+const tokens = TokenData.tokens;
+
+// Function to get decimals based on token address
+function getTokenDecimals(tokenAddress) {
+  const tokenInfo = tokens.find((token) => token.address === tokenAddress);
+  return tokenInfo ? tokenInfo.decimals : null;
+}
 
 
 function Create() {
@@ -102,26 +109,30 @@ function Create() {
     
     try {
 
-      
+      //TODO
       const lighterFiAddress = "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5";
       const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
       const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenIn);
-      const amountToApprove = (web3.utils.toBN(web3.utils.toWei(amount.toString(), 'ether'))).toString().slice(0, -12);
-      console.log(amountToApprove);
-      const allowance = await tokenContract.methods.allowance(address, lighterFiAddress).call();
-      if (web3.utils.toBN(allowance).lt(web3.utils.toBN(web3.utils.toWei(amount)))) {
-       await tokenContract.methods.approve(lighterFiAddress, amountToApprove).send({ from: address });
-      }
-      
-      
-      
 
+      const tokenDecimals = getTokenDecimals(tokenIn);
+
+      //console.log(tokenInAmount);
+      const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
+      const tokenInDecimals = web3.utils.toBN(amountInWei).div(web3.utils.toBN(10 ** (18 - tokenDecimals)));
+      const allowance = await tokenContract.methods.allowance(address, lighterFiAddress).call();
+      if (web3.utils.toBN(allowance).lt(web3.utils.toBN(tokenInDecimals))) {
+       await tokenContract.methods.approve(lighterFiAddress, tokenInDecimals).send({ from: address });
+      }
+
+      console.log(tokenInDecimals);
+      
       if (strategyType === 'DCA') {
         const tokenFrom = '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664';
         const tokenTo = tokenOut;
         const timeIntervalValue = web3.utils.toBN((timeInterval.toString()));
-        const tokenInAmount = (web3.utils.toBN(web3.utils.toWei(amount.toString(), 'ether'))).toString().slice(0, -12);
+        const tokenInAmount = web3.utils.toBN(amountInWei).div(web3.utils.toBN(10 ** (18 - 6)));
         const limit = web3.utils.toBN(0);
+        console.log(tokenInAmount);
 
         await lighterfiContract.methods.createStrategy(tokenFrom, tokenTo, timeIntervalValue, tokenInAmount, limit)
           .send({ from: address });
@@ -131,11 +142,13 @@ function Create() {
         const tokenFrom = tokenIn;
         const tokenTo = tokenOut;
         const timeIntervalValue = web3.utils.toBN(0);
-        let tokenInAmount = web3.utils.toBN(web3.utils.toWei(amount.toString(), 'ether')).toString();
-        const limit = web3.utils.toBN(web3.utils.toWei(limitPrice.toString(), 'ether')).toString().slice(0, -12);
+        let tokenInAmount = web3.utils.toBN(tokenInDecimals);
+        const limit = web3.utils.toBN(tokenInDecimals);
+        console.log(tokenInAmount);
+        console.log(limit);
         
         if (tokenIn === '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664' ){
-          tokenInAmount = tokenInAmount.slice(0, -12);
+          tokenInAmount = web3.utils.toBN(amountInWei).div(web3.utils.toBN(10 ** (18 - 6)));
         }
 
         await lighterfiContract.methods.createStrategy(tokenFrom, tokenTo, timeIntervalValue, tokenInAmount, limit)
