@@ -18,7 +18,7 @@ export const alchemy = new Alchemy(settings);
 
 
 export const web3 = new Web3(Web3.givenProvider);
-export const lighterfiAddress = "0xf79D99E640d5E66486831FD0BC3e36a29d3148C0";
+export const lighterfiAddress = "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5";
 const contract = new web3.eth.Contract(LighterFi_ABI, lighterfiAddress);
 
 

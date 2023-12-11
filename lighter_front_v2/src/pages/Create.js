@@ -33,7 +33,7 @@ function Create() {
 
   const getPrices = async () => {
     try {
-      const lighterFiAddress = "0xf79D99E640d5E66486831FD0BC3e36a29d3148C0";
+      const lighterFiAddress = "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5";
       const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
       const newPrices = await lighterfiContract.methods._batchQuery().call();
      
@@ -103,9 +103,9 @@ function Create() {
     try {
 
       
-      const lighterFiAddress = "0xf79D99E640d5E66486831FD0BC3e36a29d3148C0";
+      const lighterFiAddress = "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5";
       const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
-      const tokenContract = new web3.eth.Contract(ERC20_ABI, '0xd8b917cf32022e35E09Bac2c6F16a64fa7D1DEC9');
+      const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenIn);
 
       const allowance = await tokenContract.methods.allowance(address, lighterFiAddress).call();
       if (web3.utils.toBN(allowance).lt(web3.utils.toBN(web3.utils.toWei(amount)))) {

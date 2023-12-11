@@ -8,7 +8,7 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Button, Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { avalancheFuji } from "wagmi/chains";
+import { avalanche } from "wagmi/chains";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 
@@ -26,7 +26,7 @@ if (!process.env.REACT_APP_PROJECT_ID) {
 const projectId = process.env.REACT_APP_PROJECT_ID;
 
 // 2. Configure wagmi client
-const chains = [avalancheFuji];
+const chains = [avalanche];
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiClient = createClient({
@@ -53,10 +53,10 @@ export default function App() {
     const checkNetwork = async () => {
       try {
         const networkId = await ethereumClient.getNetworkId();
-        const isConnectedToAvalancheFuji = networkId === avalancheFuji.networkId;
-        setIsConnected(isConnectedToAvalancheFuji);
+        const isConnectedToAvalanche = networkId === avalanche.networkId;
+        setIsConnected(isConnectedToAvalanche);
 
-        if (!isConnectedToAvalancheFuji) {
+        if (!isConnectedToAvalanche) {
           // Automatically prompt user to switch network using Wagmi client
           const wagmiClientStatus = await wagmiClient.getStatus();
           if (wagmiClientStatus.connected && wagmiClientStatus.connectorId === 'walletconnect') {
