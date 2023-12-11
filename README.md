@@ -1,5 +1,6 @@
 # Lighter.Fi
 
+## Contracts
 Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
 
 Avalanche fuji testnet contract address:     0xf79d99e640d5e66486831fd0bc3e36a29d3148c0
