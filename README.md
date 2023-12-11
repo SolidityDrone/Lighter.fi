@@ -1,4 +1,8 @@
-# Lighter.Fi - Chainlink Constellation
+# Lighter.Fi - Chainlink Constellation 
+A DCA/Limit automated system to set and forget your investment strategies!
+
+## Disclaimer
+This project is available on mainnet, still you should treat this project as alpha version
 
 
 
@@ -8,10 +12,11 @@ Lighter.Fi is a decentralized DCA and Limit Order platform powered by the most e
 Our novel swap protocol provides on-chain access to the off-chain computations of a DeFi aggregator, enabling effortless multi-AMM swaps directly from smart contracts solving the problem of the complexity of making efficient contract-to-contract swaps and building applications on top of it.
 
 
-## Contracts
-Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
-
-Avalanche fuji testnet contract address:     0xf79d99e640d5e66486831fd0bc3e36a29d3148c0
+## Contracts and Chainlink contracts
+- Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
+- Custom Logic Upkeep:  [Custom Logic Upkeep](https://automation.chain.link/avalanche/7858142097224265917452231875714369874819367733172372627026030088738373557599)
+- Log Trigger Upkeep: [Custom Logic Upkeep](https://automation.chain.link/avalanche/73673180405288468594427536916862771641852914850796236166291468236742425270310)
+- Avalanche fuji testnet contract address:     0xf79d99e640d5e66486831fd0bc3e36a29d3148c0
 
 ## Run readAndSwap via foundry
 
