@@ -17,6 +17,7 @@ Our novel swap protocol provides on-chain access to the off-chain computations o
 - Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
 - Custom Logic Upkeep:  [Custom Logic Upkeep](https://automation.chain.link/avalanche/7858142097224265917452231875714369874819367733172372627026030088738373557599)
 - Log Trigger Upkeep: [Custom Logic Upkeep](https://automation.chain.link/avalanche/73673180405288468594427536916862771641852914850796236166291468236742425270310)
+- Subgraph: [Subgraph](https://thegraph.com/hosted-service/subgraph/soliditydrone/lighter-fi)
 - Avalanche fuji testnet contract address:     0xf79d99e640d5e66486831fd0bc3e36a29d3148c0
 
 ## Run readAndSwap via foundry
