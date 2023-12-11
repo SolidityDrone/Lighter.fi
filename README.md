@@ -12,6 +12,7 @@ Lighter.Fi is a decentralized DCA and Limit Order platform powered by the most e
 Our novel swap protocol provides on-chain access to the off-chain computations of a DeFi aggregator, enabling effortless multi-AMM swaps directly from smart contracts solving the problem of the complexity of making efficient contract-to-contract swaps and building applications on top of it.
 
 
+
 ## Contracts and Chainlink contracts
 - Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
 - Custom Logic Upkeep:  [Custom Logic Upkeep](https://automation.chain.link/avalanche/7858142097224265917452231875714369874819367733172372627026030088738373557599)
@@ -25,6 +26,9 @@ To test that it works properly you can follow these steps.
 - Navigate to: https://functions.chain.link/playground
 - Paste in https://github.com/SolidityDrone/onchain_dca/blob/main/smart%20contracts/Foundry/src/functionsJS/lifiapi_hardcoded 
 - Get the return AS BYTES and replace <resultfromPlayground> in LighterFiMock.sol
+![image](https://github.com/SolidityDrone/Lighter.fi/assets/104315978/10f15c19-b772-481b-9c35-d5195b5a6d30)
+
+
 
 ```
     function performUpkeepMock() public{
