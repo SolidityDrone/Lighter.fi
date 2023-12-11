@@ -1,4 +1,12 @@
-# Lighter.Fi
+# Lighter.Fi - Chainlink Constellation
+
+
+
+## About the Project
+
+Lighter.Fi is a decentralized DCA and Limit Order platform powered by the most efficient multi-AMM on-chain swap protocol. 
+Our novel swap protocol provides on-chain access to the off-chain computations of a DeFi aggregator, enabling effortless multi-AMM swaps directly from smart contracts solving the problem of the complexity of making efficient contract-to-contract swaps and building applications on top of it.
+
 
 ## Contracts
 Avalanche mainnet contract address:          0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5
