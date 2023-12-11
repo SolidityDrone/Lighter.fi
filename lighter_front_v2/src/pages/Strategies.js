@@ -216,7 +216,7 @@ function Strategies() {
 
                         </td>
                         <td>
-                          {strategy.type === 'Limit' ? '-' : strategy.limitAmountOut}
+                          {strategy.type === 'Limit' ? '-' : web3.utils.fromWei(strategy.limitAmountOut, 'ether').slice(0, -6)}
                         </td>                        
                         {/* Delete Column */}
                         <td>

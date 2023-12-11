@@ -106,10 +106,11 @@ function Create() {
       const lighterFiAddress = "0xaeAC25ae4C6C6808a8d701C6560CA72498De40D5";
       const lighterfiContract = new web3.eth.Contract(LighterFiABI, lighterFiAddress);
       const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenIn);
-
+      const amountToApprove = (web3.utils.toBN(web3.utils.toWei(amount.toString(), 'ether'))).toString().slice(0, -12);
+      console.log(amountToApprove);
       const allowance = await tokenContract.methods.allowance(address, lighterFiAddress).call();
       if (web3.utils.toBN(allowance).lt(web3.utils.toBN(web3.utils.toWei(amount)))) {
-       await tokenContract.methods.approve(lighterFiAddress, amount).send({ from: address });
+       await tokenContract.methods.approve(lighterFiAddress, amountToApprove).send({ from: address });
       }
       
       
