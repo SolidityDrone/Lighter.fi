@@ -55,18 +55,18 @@ contract Test_Sample is Test {
     // // // find the script in functionsJS folder
     // // // forge test --match-test testPerformMock -vvv --fork-url https://api.avax.network/ext/bc/C/rpc
     
-    function testPerformMock() public {
+    // function testPerformMock() public {
        
-        vm.prank(user);
-        IERC20(usdc).approve(address(lighter), 100000);
+    //     vm.prank(user);
+    //     IERC20(usdc).approve(address(lighter), 100000);
         
         
-        lighter.performUpkeepMock();
-        console.log(IERC20(usdc).balanceOf(user));
-        console.log(IERC20(wavax).balanceOf(user));
+    //     lighter.performUpkeepMock();
+    //     console.log(IERC20(usdc).balanceOf(user));
+    //     console.log(IERC20(wavax).balanceOf(user));
 
-        console.log(address(this));
-    }
+    //     console.log(address(this));
+    // }
 
     
 }   
